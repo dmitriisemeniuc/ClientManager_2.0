@@ -7,17 +7,29 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
-import com.semeniuc.dmitrii.clientmanager.main.MainActivity;
+import com.semeniuc.dmitrii.clientmanager.App;
+import com.semeniuc.dmitrii.clientmanager.AppComponent;
 import com.semeniuc.dmitrii.clientmanager.R;
+import com.semeniuc.dmitrii.clientmanager.main.MainActivity;
+import com.semeniuc.dmitrii.clientmanager.utils.Utils;
+
+import javax.inject.Inject;
 
 public class LoginActivity extends AppCompatActivity implements LoginView, View.OnClickListener {
 
+    @Inject
+    Utils utils;
+
+    private AppComponent appComponent;
     private ProgressBar progressBar;
     private EditText username;
     private EditText password;
     private LoginPresenter presenter;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
+
+        ((App)getApplication()).getComponent().inject(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -27,6 +39,11 @@ public class LoginActivity extends AppCompatActivity implements LoginView, View.
         findViewById(R.id.button).setOnClickListener(this);
 
         setPresenter(new LoginPresenterImpl(this));
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
     }
 
     @Override

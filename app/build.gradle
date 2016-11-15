@@ -6,7 +6,7 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     dexOptions{
         maxProcessCount 2
-        javaMaxHeapSize "3g"
+        javaMaxHeapSize "2g"
     }
 
     defaultConfig {
@@ -20,6 +20,7 @@ android {
     }
     buildTypes {
         debug {
+            debuggable true
             minifyEnabled false
             // Uses new built-in shrinker http://tools.android.com/tech-docs/new-build-system/built-in-shrinker
             useProguard false
@@ -79,7 +80,8 @@ dependencies {
 
     // Dagger dependencies
     apt "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
-    provided 'org.glassfish:javax.annotation:10.0-b28'
+    /*provided 'org.glassfish:javax.annotation:10.0-b28'*/
+    provided 'javax.annotation:jsr250-api:1.0'
     compile "com.google.dagger:dagger:$rootProject.daggerVersion"
 
     // Dependencies for local unit tests
