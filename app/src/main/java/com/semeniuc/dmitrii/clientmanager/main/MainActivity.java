@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.semeniuc.dmitrii.clientmanager.App;
 import com.semeniuc.dmitrii.clientmanager.R;
-import com.semeniuc.dmitrii.clientmanager.utils.Utils;
+import com.semeniuc.dmitrii.clientmanager.utils.ActivityUtils;
 
 import javax.inject.Inject;
 
@@ -25,13 +25,11 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @Inject
-    Utils utils;
+    ActivityUtils utils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Dagger
-        ((App)getApplication()).getComponent().inject(this);
-
+        ((App)getApplication()).getComponent().inject(this); // Dagger
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

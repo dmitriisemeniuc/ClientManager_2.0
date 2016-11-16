@@ -8,42 +8,36 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.semeniuc.dmitrii.clientmanager.App;
-import com.semeniuc.dmitrii.clientmanager.AppComponent;
-import com.semeniuc.dmitrii.clientmanager.R;
 import com.semeniuc.dmitrii.clientmanager.main.MainActivity;
-import com.semeniuc.dmitrii.clientmanager.utils.Utils;
+import com.semeniuc.dmitrii.clientmanager.R;
+import com.semeniuc.dmitrii.clientmanager.utils.ActivityUtils;
+import com.semeniuc.dmitrii.clientmanager.utils.GoogleAuthenticator;
 
 import javax.inject.Inject;
 
 public class LoginActivity extends AppCompatActivity implements LoginView, View.OnClickListener {
 
     @Inject
-    Utils utils;
+    ActivityUtils utils;
+    @Inject
+    GoogleAuthenticator googleAuthenticator;
 
-    private AppComponent appComponent;
     private ProgressBar progressBar;
     private EditText username;
     private EditText password;
     private LoginPresenter presenter;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
-
-        ((App)getApplication()).getComponent().inject(this);
-
+        ((App)getApplication()).getComponent().inject(this); // Dagger
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        progressBar = (ProgressBar) findViewById(R.id.progress);
-        username = (EditText) findViewById(R.id.username);
-        password = (EditText) findViewById(R.id.password);
-        findViewById(R.id.button).setOnClickListener(this);
+        progressBar = (ProgressBar) findViewById(R.id.login_progress);
+        username = (EditText) findViewById(R.id.login_et_email);
+        password = (EditText) findViewById(R.id.login_et_password);
+        findViewById(R.id.login_button).setOnClickListener(this);
 
         setPresenter(new LoginPresenterImpl(this));
-    }
-
-    @Override
-    protected void onStart(){
-        super.onStart();
     }
 
     @Override

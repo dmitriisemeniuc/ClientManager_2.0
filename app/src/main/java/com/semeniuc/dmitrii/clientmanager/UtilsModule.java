@@ -3,7 +3,7 @@ package com.semeniuc.dmitrii.clientmanager;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.semeniuc.dmitrii.clientmanager.utils.Utils;
+import com.semeniuc.dmitrii.clientmanager.utils.ActivityUtils;
 
 import javax.inject.Singleton;
 
@@ -22,7 +22,7 @@ public final class UtilsModule {
     @Provides
     @NonNull
     @Singleton
-    public Utils provideUtils(){
-        return new Utils(context);
+    public ActivityUtils provideUtils(){
+        return new ActivityUtils(context);
     }
 }
