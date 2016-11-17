@@ -1,4 +1,4 @@
-package com.semeniuc.dmitrii.clientmanager;
+package com.semeniuc.dmitrii.clientmanager.modules;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -15,7 +15,7 @@ public final class UtilsModule {
 
     private final Context context;
 
-    UtilsModule(Context context) {
+    public UtilsModule(Context context) {
         this.context = context;
     }
 

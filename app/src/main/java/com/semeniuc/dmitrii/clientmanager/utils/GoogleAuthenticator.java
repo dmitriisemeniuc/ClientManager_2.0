@@ -33,10 +33,14 @@ public class GoogleAuthenticator implements GoogleApiClient.OnConnectionFailedLi
                 .build();
     }
 
+    public GoogleApiClient getApiClient() {
+        return apiClient;
+    }
+
     public OptionalPendingResult<GoogleSignInResult> getOptionalPendingResult() {
+        //return Auth.GoogleSignInApi.silentSignIn(apiClient);
         return Auth.GoogleSignInApi.silentSignIn(apiClient);
     }
 
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {}
+    @Override public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {}
 }

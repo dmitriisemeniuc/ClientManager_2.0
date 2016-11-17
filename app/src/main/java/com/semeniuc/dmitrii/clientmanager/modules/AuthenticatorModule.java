@@ -1,4 +1,4 @@
-package com.semeniuc.dmitrii.clientmanager;
+package com.semeniuc.dmitrii.clientmanager.modules;
 
 import android.support.annotation.NonNull;
 

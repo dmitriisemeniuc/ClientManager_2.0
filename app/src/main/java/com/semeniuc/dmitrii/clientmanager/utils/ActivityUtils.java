@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.semeniuc.dmitrii.clientmanager.R;
 import com.semeniuc.dmitrii.clientmanager.model.Appointment;
+import com.semeniuc.dmitrii.clientmanager.model.User;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -137,15 +138,19 @@ public class ActivityUtils implements Utils.Activity {
         return settings.getString(Constants.USER, Constants.NEW_USER);
     }
 
-    public void setUserInPrefs(String user, Context context) {
+    public SharedPreferences getSharedPreferences(String prefs) {
+        return context.getSharedPreferences(prefs, Context.MODE_PRIVATE);
+    }
+
+    public void setUserInPrefs(String userString, User user) {
         SharedPreferences.Editor editor = getEditor(Constants.LOGIN_PREFS, context);
-        if (user.equals(Constants.NEW_USER)) {
+        if (userString.equals(Constants.NEW_USER)) {
             editor.putString(Constants.USER, Constants.NEW_USER);
             editor.putString(Constants.EMAIL, Constants.EMPTY);
             editor.putBoolean(Constants.LOGGED, Constants.LOGGED_OUT);
         } else {
-            editor.putString(Constants.USER, user);
-            //    editor.putString(Constants.EMAIL, MyApplication.getInstance().getUser().getEmail());
+            editor.putString(Constants.USER, userString);
+            editor.putString(Constants.EMAIL, user.getEmail());
             editor.putBoolean(Constants.LOGGED, Constants.LOGGED_IN);
         }
         editor.commit();
