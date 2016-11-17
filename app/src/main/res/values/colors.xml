@@ -8,6 +8,8 @@
     <color name="textHint">#BDBDBD</color>
     <color name="icons">#212121</color>
     <color name="divider">#BDBDBD</color>
+    <color name="whiteTransparent70">#B3FFFFFF</color>
+    <color name="whiteTransparent95">#F2FFFFFF</color>
     <color name="orangeBackground">#FF6D00</color>
     <color name="greenBackground">#27ae60</color>
     <color name="ripple">#99FFFFFF</color>

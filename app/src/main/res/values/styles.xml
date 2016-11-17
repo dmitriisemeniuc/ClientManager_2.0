@@ -17,12 +17,22 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="Theme.AppCompat.Light.NoActionBar.FullScreen" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="colorControlNormal">@color/whiteTransparent70</item>
+        <item name="colorControlActivated">@color/whiteTransparent95</item>
+        <item name="colorControlHighlight">@color/whiteTransparent95</item>
+    </style>
+
     <!-- Login -->
     <style name="Login">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_centerHorizontal">true</item>
-        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/whiteTransparent70</item>
         <item name="android:layout_marginBottom">@dimen/activity_vertical_margin</item>
     </style>
 

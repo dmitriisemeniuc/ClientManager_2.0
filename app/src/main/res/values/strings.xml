@@ -5,8 +5,10 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
-    <string name="user_name">username</string>
-    <string name="password">password</string>
+    <string name="email">Email</string>
+    <string name="login">Login</string>
+    <string name="or">OR</string>
+    <string name="password">Password</string>
     <string name="log_in">Log in</string>
     <string name="title_activity_main">Appointments</string>
     <string name="username_error">Email cannot be empty</string>
@@ -49,9 +51,6 @@
     <string name="user_saving_failed">User saving failed</string>
     <string name="choose_date">Choose date</string>
     <string name="choose_time">Choose time</string>
-    <string name="email">Email</string>
-    <string name="login">Login</string>
-    <string name="or">OR</string>
     <string name="do_not_have_account_yet">Don\'t have account yet?</string>
     <string name="registration_link">Registration</string>
     <string name="registration">Registration</string>
