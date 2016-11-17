@@ -14,10 +14,12 @@ public interface LoginView extends BaseView<LoginPresenter> {
     void setPasswordError();
 
     void navigateToHome();
-    
-    void updateUI(boolean update);
 
     void setGoogleApiClient();
+
+    void loginWithGoogle();
+
+    void loginWithEmail();
 
     OptionalPendingResult<GoogleSignInResult> getOptionalPendingResult();
 
@@ -28,4 +30,6 @@ public interface LoginView extends BaseView<LoginPresenter> {
     void showNoInternetAccessMessage();
 
     void showUserSavingFailedMessage();
+
+    void showInvalidCredentialsMessage();
 }

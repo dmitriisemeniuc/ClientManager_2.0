@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.view.ViewGroup;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
@@ -36,15 +37,40 @@ public class LoginInteractorImpl implements LoginInteractor {
         App.getInstance().getComponent().inject(this);
     }
 
-    public void loginWithGoogle(GoogleSignInResult result, OnGoogleLoginFinishedListener listener) {
+    @Override public void loginWithGoogle(GoogleSignInResult result, OnGoogleLoginFinishedListener listener) {
         if (result.isSuccess()) {
             boolean userCreated = setGoogleUserDetails(result);
             if(userCreated) saveGoogleUser(listener);
         }
-        else if (utils.isNetworkAvailable(context))
-            listener.onGoogleLoginError();
-        else
+        else if (!utils.isNetworkAvailable())
             listener.onNoInternetAccess();
+        else
+            listener.onGoogleLoginError();
+    }
+
+    @Override public void loginWithEmail(String email, String password, OnLoginFinishedListener listener) {
+        if(!isSignInFieldsValid(email, password, listener)) return;
+        User user = dbHelper.getUserByEmailAndPassword(email, password);
+        if(user != null){
+            this.user = user;
+            utils.setUserInPrefs(Constants.REGISTERED_USER, this.user);
+            listener.onSuccess();
+        } else {
+            listener.onInvalidCredentials();
+        }
+    }
+
+    private boolean isSignInFieldsValid(String email, String password,OnLoginFinishedListener listener) {
+        boolean valid = true;
+        if(TextUtils.isEmpty(email)){
+            listener.onUsernameError();
+            valid = false;
+        }
+        if(TextUtils.isEmpty(password)){
+            listener.onPasswordError();
+            valid = false;
+        }
+        return valid;
     }
 
     /**
@@ -181,7 +207,7 @@ public class LoginInteractorImpl implements LoginInteractor {
     final Observable<Integer> setGlobalUserObservable = Observable.create(new Observable.OnSubscribe<Integer>() {
         @Override
         public void call(Subscriber<? super Integer> subscriber) {
-            subscriber.onNext(dbHelper.setGlobalUser(email));
+            subscriber.onNext(dbHelper.setGlobalUserWithEmail(email));
             subscriber.onCompleted();
         }
     }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
@@ -205,5 +231,9 @@ public class LoginInteractorImpl implements LoginInteractor {
                 }
             }
         }, 2000);
+    }
+
+    @Override public void hideKeyboard(ViewGroup layout) {
+        utils.hideKeyboard(layout);
     }
 }

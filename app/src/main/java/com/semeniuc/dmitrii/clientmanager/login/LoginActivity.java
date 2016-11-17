@@ -42,7 +42,10 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
     @OnClick(R.id.login_with_google_button) void googleLogin() {
         loginWithGoogle();
     }
-    //@OnClick(R.id.login_button) void emailLogin() { loginWithEmail(); }
+
+    @OnClick(R.id.login_button) void emailLogin() {
+        loginWithEmail();
+    }
     //@OnClick(R.id.login_registration_link) void register() { goToRegistrationActivity(); }
 
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +60,7 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.RC_SIGN_IN) {
-            presenter.loginWithGoogle(Auth.GoogleSignInApi.getSignInResultFromIntent(data));
+            presenter.onLoginWithGoogle(Auth.GoogleSignInApi.getSignInResultFromIntent(data));
         }
     }
 
@@ -107,9 +110,15 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
         super.onDestroy();
     }
 
-    private void loginWithGoogle() {
+    @Override public void loginWithGoogle() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleAuthenticator.getApiClient());
         startActivityForResult(signInIntent, Constants.RC_SIGN_IN);
+    }
+
+    @Override public void loginWithEmail() {
+        presenter.hideKeyboard(mainLayout);
+        presenter.onLoginWithEmail(editTextEmail.getText().toString(),
+                editTextPassword.getText().toString());
     }
 
     @Override public OptionalPendingResult<GoogleSignInResult> getOptionalPendingResult() {
@@ -123,22 +132,21 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
 
     @Override public void showGoogleLoginError() {
         Toast.makeText(this, getResources().getString(R.string.something_wrong),
-                Toast.LENGTH_SHORT).show();
+                Toast.LENGTH_LONG).show();
     }
 
     @Override public void showNoInternetAccessMessage() {
         Toast.makeText(this, getResources().getString(R.string.no_internet_access),
-                Toast.LENGTH_SHORT).show();
+                Toast.LENGTH_LONG).show();
     }
 
     @Override public void showUserSavingFailedMessage() {
         Toast.makeText(this, getResources().getString(R.string.user_saving_failed),
-                Toast.LENGTH_SHORT).show();
+                Toast.LENGTH_LONG).show();
     }
 
-    @Override public void updateUI(boolean update) {
-        if (!update) return;
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(intent);
+    @Override public void showInvalidCredentialsMessage() {
+        Toast.makeText(this, getResources().getString(R.string.invalid_credentials),
+                Toast.LENGTH_LONG).show();
     }
 }

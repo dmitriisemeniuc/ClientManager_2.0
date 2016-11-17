@@ -9,72 +9,63 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class DatabaseTaskHelper {
+public class DatabaseTaskHelper implements DatabaseManager.UserManager {
 
     @Inject User userGlobal;
+    @Inject UserRepository userRepository;
 
-    public DatabaseTaskHelper(){
+    public DatabaseTaskHelper() {
         App.getInstance().getComponent().inject(this);
     }
 
-    public User getUserByEmail(String email) {
-        UserRepository userRepo = UserRepository.getInstance();
-        List<User> users = userRepo.findByEmail(email);
-        if (users != null && users.size() > 0) return users.get(0); else return null;
+    @Override public User getUserByEmail(String email) {
+        List<User> users = userRepository.findByEmail(email);
+        if (users != null && users.size() > 0) return users.get(0);
+        else return null;
     }
 
-    public User getUserByEmailAndPassword(String email, String password) {
-        UserRepository userRepo = UserRepository.getInstance();
-        List<User> users = userRepo.findByEmailAndPassword(email, password);
-        if (users != null && users.size() > 0) return users.get(0); else return null;
+    @Override public User getUserByEmailAndPassword(String email, String password) {
+        List<User> users = userRepository.findByEmailAndPassword(email, password);
+        if (users != null && users.size() > 0) return users.get(0);
+        else return null;
     }
 
-    public Integer saveGoogleUser(User user) {
-        UserRepository userRepo = UserRepository.getInstance();
-        List<User> users = userRepo.findByEmail(user.getEmail());
-        if (null != users) {
-            if (users.size() == Constants.SIZE_EMPTY) {
-                // CREATE USER
-                int index = userRepo.create(user);
-                if (index == 1) {
-                    userGlobal = userRepo.findByEmail(user.getEmail()).get(0);
-                    return Constants.USER_SAVED;
-                } else {
-                    return Constants.USER_NOT_SAVED;
-                }
-            } else {
-                // USER EXISTS
-                userGlobal = users.get(0);
-                return Constants.USER_EXISTS;
+    @Override public Integer saveGoogleUser(User user) {
+        List<User> users = userRepository.findByEmail(user.getEmail());
+        if (null == users) return Constants.NO_DB_RESULT;
+        if (users.size() == Constants.SIZE_EMPTY) {
+            // CREATE USER
+            int index = userRepository.create(user);
+            if (index == 1) {
+                userGlobal = userRepository.findByEmail(user.getEmail()).get(0);
+                return Constants.USER_SAVED;
             }
+            return Constants.USER_NOT_SAVED;
         } else {
-            return Constants.NO_DB_RESULT;
+            // USER EXISTS
+            userGlobal = users.get(0);
+            return Constants.USER_EXISTS;
         }
     }
 
-    public Integer saveRegisteredUser(User user) {
-        UserRepository userRepo = UserRepository.getInstance();
-        int index = userRepo.create(user);
+    @Override public Integer saveRegisteredUser(User user) {
+        int index = userRepository.create(user);
         if (index == 1) {
-            List<User> users = userRepo.findByEmail(user.getEmail());
+            List<User> users = userRepository.findByEmail(user.getEmail());
             userGlobal = users.get(0);
             return Constants.USER_SAVED;
         }
         return Constants.USER_NOT_SAVED;
     }
 
-    public Integer setGlobalUser(String email) {
-        UserRepository userRepo = UserRepository.getInstance();
-        List<User> users = userRepo.findByEmail(email);
-        if (null != users) {
-            if (users.size() > 0) {
-                userGlobal = users.get(0);
-                return Constants.USER_SAVED;
-            } else {
-                return Constants.USER_NOT_SAVED;
-            }
+    @Override public Integer setGlobalUserWithEmail(String email) {
+        List<User> users = userRepository.findByEmail(email);
+        if (null == users) return Constants.NO_DB_RESULT;
+        if (users.size() > 0) {
+            userGlobal = users.get(0);
+            return Constants.USER_SAVED;
         }
-        return Constants.NO_DB_RESULT;
+        return Constants.USER_NOT_SAVED;
     }
 
     /*public Integer saveAppointment(Appointment appointment){

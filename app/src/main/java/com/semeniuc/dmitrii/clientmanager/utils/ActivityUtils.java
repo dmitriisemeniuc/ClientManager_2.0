@@ -161,14 +161,14 @@ public class ActivityUtils implements Utils.Activity {
         return settings.edit();
     }
 
-    public boolean isNetworkAvailable(Context context) {
+    public boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
     }
 
-    public void hideKeyboard(ViewGroup mainLayout, Context context) {
+    public void hideKeyboard(ViewGroup mainLayout) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mainLayout.getWindowToken(), 0);
     }

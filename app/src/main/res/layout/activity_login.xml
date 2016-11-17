@@ -26,6 +26,7 @@
             android:hint="@string/email"
             android:textColorHint="@color/whiteTransparent70"
             android:textColor="@color/whiteTransparent95"
+            android:textSize="16sp"
             android:inputType="textEmailAddress"/>
 
         <android.support.v7.widget.AppCompatEditText
@@ -36,6 +37,7 @@
             android:hint="@string/password"
             android:textColorHint="@color/whiteTransparent70"
             android:textColor="@color/whiteTransparent95"
+            android:textSize="16sp"
             android:inputType="textVisiblePassword"/>
 
         <android.support.v7.widget.AppCompatButton

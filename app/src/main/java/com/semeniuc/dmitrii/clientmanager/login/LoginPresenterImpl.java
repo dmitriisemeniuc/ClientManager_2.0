@@ -1,5 +1,7 @@
 package com.semeniuc.dmitrii.clientmanager.login;
 
+import android.view.ViewGroup;
+
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 
 public class LoginPresenterImpl implements LoginPresenter, LoginInteractor.OnLoginFinishedListener,
@@ -20,8 +22,12 @@ public class LoginPresenterImpl implements LoginPresenter, LoginInteractor.OnLog
         loginInteractor.login(username, password, this);
     }
 
-    @Override public void loginWithGoogle(GoogleSignInResult result) {
+    @Override public void onLoginWithGoogle(GoogleSignInResult result) {
         loginInteractor.loginWithGoogle(result, this);
+    }
+
+    @Override public void onLoginWithEmail(String email, String password) {
+        loginInteractor.loginWithEmail(email, password, this);
     }
 
     @Override public void onDestroy() {
@@ -48,9 +54,11 @@ public class LoginPresenterImpl implements LoginPresenter, LoginInteractor.OnLog
     }
 
     @Override public void onSuccess() {
-        if (loginView != null) {
-            loginView.navigateToHome();
-        }
+        if (loginView != null) loginView.navigateToHome();
+    }
+
+    @Override public void onInvalidCredentials() {
+        if (loginView != null) loginView.showInvalidCredentialsMessage();
     }
 
     @Override
@@ -58,8 +66,12 @@ public class LoginPresenterImpl implements LoginPresenter, LoginInteractor.OnLog
 
     }
 
+    @Override public void hideKeyboard(ViewGroup layout) {
+        loginInteractor.hideKeyboard(layout);
+    }
+
     @Override public void onGoogleLoginSuccess() {
-        loginView.updateUI(true);
+        loginView.navigateToHome();
         loginView.showLoginMessage();
     }
 
@@ -84,7 +96,7 @@ public class LoginPresenterImpl implements LoginPresenter, LoginInteractor.OnLog
     }
 
     @Override public void onUpdateUI() {
-        loginView.updateUI(true);
+        loginView.navigateToHome();
     }
 
     @Override public void onSilentSignInWithGoogle() {
@@ -97,6 +109,6 @@ public class LoginPresenterImpl implements LoginPresenter, LoginInteractor.OnLog
 
     @Override public void onUserSaved() {
         loginView.showLoginMessage();
-        loginView.updateUI(true);
+        loginView.navigateToHome();
     }
 }

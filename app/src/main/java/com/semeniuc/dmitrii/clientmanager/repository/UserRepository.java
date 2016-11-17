@@ -5,9 +5,7 @@ import android.util.Log;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
-import com.semeniuc.dmitrii.clientmanager.App;
 import com.semeniuc.dmitrii.clientmanager.data.local.DatabaseHelper;
-import com.semeniuc.dmitrii.clientmanager.data.local.DatabaseManager;
 import com.semeniuc.dmitrii.clientmanager.model.User;
 import com.semeniuc.dmitrii.clientmanager.utils.Constants;
 
@@ -17,7 +15,7 @@ public class UserRepository implements IRepository {
 
     public static final String LOG_TAG = UserRepository.class.getSimpleName();
     public static final boolean DEBUG = Constants.DEBUG;
-    private static final UserRepository instance = new UserRepository();
+    /*private static final UserRepository instance = new UserRepository();
 
     private static DatabaseHelper helper;
 
@@ -26,11 +24,17 @@ public class UserRepository implements IRepository {
         helper = DatabaseManager.getInstance().getHelper();
     }
 
-    private UserRepository() {
+    public UserRepository() {
     }
 
     public static UserRepository getInstance() {
         return instance;
+    }*/
+
+    private DatabaseHelper helper;
+
+    public UserRepository(DatabaseHelper dbHelper){
+        helper = dbHelper;
     }
 
     @Override

@@ -1,29 +1,19 @@
 package com.semeniuc.dmitrii.clientmanager.data.local;
 
-import android.content.Context;
+import com.semeniuc.dmitrii.clientmanager.model.User;
 
-public class DatabaseManager{
+public interface DatabaseManager {
 
-    static private DatabaseManager instance;
+    interface UserManager {
 
-    static public void init(Context ctx) {
-        if (null == instance) {
-            instance = new DatabaseManager(ctx);
-        }
+        User getUserByEmail(String email);
+
+        User getUserByEmailAndPassword(String email, String password);
+
+        Integer saveGoogleUser(User user);
+
+        Integer saveRegisteredUser(User user);
+
+        Integer setGlobalUserWithEmail(String email);
     }
-
-    static public DatabaseManager getInstance() {
-        return instance;
-    }
-
-    private DatabaseHelper helper;
-
-    private DatabaseManager(Context ctx) {
-        helper = new DatabaseHelper(ctx);
-    }
-
-    public DatabaseHelper getHelper() {
-        return helper;
-    }
-
 }

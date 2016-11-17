@@ -14,7 +14,9 @@ public interface LoginPresenter extends BasePresenter{
 
     void onUpdateUI();
 
-    void loginWithGoogle(GoogleSignInResult result);
+    void onLoginWithGoogle(GoogleSignInResult result);
+
+    void onLoginWithEmail(String email, String password);
 
     void onDestroy();
 

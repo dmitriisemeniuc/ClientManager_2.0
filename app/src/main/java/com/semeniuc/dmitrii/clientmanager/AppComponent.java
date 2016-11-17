@@ -7,7 +7,9 @@ import com.semeniuc.dmitrii.clientmanager.login.LoginPresenterImpl;
 import com.semeniuc.dmitrii.clientmanager.main.MainActivity;
 import com.semeniuc.dmitrii.clientmanager.modules.AppModule;
 import com.semeniuc.dmitrii.clientmanager.modules.AuthenticatorModule;
+import com.semeniuc.dmitrii.clientmanager.modules.DatabaseHelperModule;
 import com.semeniuc.dmitrii.clientmanager.modules.DatabaseTaskHelperModule;
+import com.semeniuc.dmitrii.clientmanager.modules.RepositoryModule;
 import com.semeniuc.dmitrii.clientmanager.modules.UserModule;
 import com.semeniuc.dmitrii.clientmanager.modules.UtilsModule;
 
@@ -21,7 +23,9 @@ import dagger.Component;
                 UtilsModule.class,
                 AuthenticatorModule.class,
                 UserModule.class,
-                DatabaseTaskHelperModule.class
+                DatabaseHelperModule.class,
+                DatabaseTaskHelperModule.class,
+                RepositoryModule.class
         }
 )
 @Singleton

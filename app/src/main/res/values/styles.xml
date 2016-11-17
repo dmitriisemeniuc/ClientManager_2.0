@@ -24,7 +24,7 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="colorControlNormal">@color/whiteTransparent70</item>
         <item name="colorControlActivated">@color/whiteTransparent95</item>
-        <item name="colorControlHighlight">@color/whiteTransparent95</item>
+        <item name="colorControlHighlight">@color/whiteTransparent70</item>
     </style>
 
     <!-- Login -->

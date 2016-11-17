@@ -13,16 +13,16 @@ import dagger.Provides;
 @Module
 public final class UtilsModule {
 
-    private final Context context;
+    /*private final Context context;
 
     public UtilsModule(Context context) {
         this.context = context;
-    }
+    }*/
 
     @Provides
     @NonNull
     @Singleton
-    public ActivityUtils provideUtils(){
+    public ActivityUtils provideUtils(Context context){
         return new ActivityUtils(context);
     }
 }

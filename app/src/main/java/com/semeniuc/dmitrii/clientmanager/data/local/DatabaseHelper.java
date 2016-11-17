@@ -22,8 +22,8 @@ import java.util.List;
 
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
-    public static final String LOG_TAG = DatabaseHelper.class.getSimpleName();
-    public static final boolean DEBUG = Constants.DEBUG;
+    private static final String LOG_TAG = DatabaseHelper.class.getSimpleName();
+    private static final boolean DEBUG = Constants.DEBUG;
 
     private static final String DATABASE_NAME = "ClientManagerDB.sqlite";
 
