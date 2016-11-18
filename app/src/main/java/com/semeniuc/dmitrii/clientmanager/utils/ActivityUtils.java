@@ -32,25 +32,16 @@ public class ActivityUtils implements Utils.Activity {
         return "Hello from Utils";
     }
 
-    public boolean isValidEditText(AppCompatEditText editText, Context context) {
+    public boolean isValidEditText(AppCompatEditText editText) {
         boolean empty = isEditTextEmpty(editText);
         if (empty) editText.setError(context.getResources().getString(R.string.field_is_required));
         return !empty;
     }
 
-    public boolean isValidTextView(AppCompatTextView textView, Context context) {
+    public boolean isValidTextView(AppCompatTextView textView) {
         boolean empty = isTextViewEmpty(textView);
         if (empty) textView.setError(context.getResources().getString(R.string.field_is_required));
         return !empty;
-    }
-
-    public boolean isEqualPasswords(AppCompatEditText editText1,
-                                           AppCompatEditText editText2, Context context) {
-        if (editText1.getText().toString().equals(editText2.getText().toString())) {
-            return true;
-        }
-        editText2.setError(context.getResources().getString(R.string.passwords_not_match));
-        return false;
     }
 
     public boolean isEditTextEmpty(AppCompatEditText et) {
@@ -67,7 +58,7 @@ public class ActivityUtils implements Utils.Activity {
         return dateFormat.format(date);
     }
 
-    public Date convertStringToDate(String dateString, String pattern, Context context) {
+    public Date convertStringToDate(String dateString, String pattern) {
         Locale locale = getLocale(context);
         SimpleDateFormat format = new SimpleDateFormat(pattern, locale);
         Date date = null;
@@ -79,16 +70,16 @@ public class ActivityUtils implements Utils.Activity {
         return date;
     }
 
-    public Calendar getDateForDialog(String date, Context context) {
+    public Calendar getDateForDialog(String date) {
         final Calendar calendar = Calendar.getInstance();
-        Date dateForDialog = convertStringToDate(date, Constants.DATE_FORMAT, context);
+        Date dateForDialog = convertStringToDate(date, Constants.DATE_FORMAT);
         calendar.setTime(dateForDialog);
         return calendar;
     }
 
-    public Calendar getTimeForDialog(String time, Context context) {
+    public Calendar getTimeForDialog(String time) {
         final Calendar calendar = Calendar.getInstance();
-        Date dateForDialog = convertStringToDate(time, Constants.TIME_FORMAT, context);
+        Date dateForDialog = convertStringToDate(time, Constants.TIME_FORMAT);
         calendar.setTime(dateForDialog);
         return calendar;
     }
@@ -132,7 +123,7 @@ public class ActivityUtils implements Utils.Activity {
         return hourStr + ":" + minuteStr;
     }
 
-    public String getUserFromPrefs(Context context) {
+    public String getUserFromPrefs() {
         SharedPreferences settings = context.getSharedPreferences(
                 Constants.LOGIN_PREFS, Context.MODE_PRIVATE);
         return settings.getString(Constants.USER, Constants.NEW_USER);
@@ -143,7 +134,7 @@ public class ActivityUtils implements Utils.Activity {
     }
 
     public void setUserInPrefs(String userString, User user) {
-        SharedPreferences.Editor editor = getEditor(Constants.LOGIN_PREFS, context);
+        SharedPreferences.Editor editor = getEditor(Constants.LOGIN_PREFS);
         if (userString.equals(Constants.NEW_USER)) {
             editor.putString(Constants.USER, Constants.NEW_USER);
             editor.putString(Constants.EMAIL, Constants.EMPTY);
@@ -156,7 +147,7 @@ public class ActivityUtils implements Utils.Activity {
         editor.commit();
     }
 
-    public SharedPreferences.Editor getEditor(String prefs, Context context) {
+    public SharedPreferences.Editor getEditor(String prefs) {
         SharedPreferences settings = context.getSharedPreferences(prefs, Context.MODE_PRIVATE);
         return settings.edit();
     }

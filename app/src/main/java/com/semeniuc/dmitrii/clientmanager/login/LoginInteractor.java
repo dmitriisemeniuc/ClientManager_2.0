@@ -50,8 +50,6 @@ public interface LoginInteractor {
 
     void loginWithEmail(String email, String password, OnLoginFinishedListener listener);
 
-    void login(String username, String password, OnLoginFinishedListener listener);
-
     void verifyUserType(OnVerifyUserTypeFinishedListener listener);
 
     void silentSignInWithGoogle(OptionalPendingResult<GoogleSignInResult> opr,

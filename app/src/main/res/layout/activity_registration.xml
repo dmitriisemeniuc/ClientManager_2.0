@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/main_registration_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/main_background"
+                android:orientation="vertical"
+                tools:context=".registr.RegistrationActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#B3000000"
+        android:focusableInTouchMode="true">
+
+        <RelativeLayout
+            android:id="@+id/registration_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true">
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/registration_et_email"
+                style="@style/registrationField"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"/>
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/registration_et_password"
+                style="@style/registrationField"
+                android:layout_below="@+id/registration_et_email"
+                android:hint="@string/password"
+                android:inputType="textVisiblePassword"/>
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/registration_et_password_confirm"
+                style="@style/registrationField"
+                android:layout_below="@+id/registration_et_password"
+                android:hint="@string/confirmPassword"
+                android:inputType="textVisiblePassword"/>
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/registration_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/registration_et_password_confirm"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:background="@drawable/registration_button"
+                android:textColor="@color/whiteTransparent70"
+                android:text="@string/registration"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/registration_login_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dp"
+            android:gravity="center_horizontal">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/registration_login_question"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:text="@string/already_have_account"
+                android:textColor="@color/whiteTransparent70"
+                android:textSize="16sp"/>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/registration_login_link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/registration_login_question"
+                android:layout_toRightOf="@+id/registration_login_question"
+                android:fontFamily="sans-serif"
+                android:text="@string/login_link"
+                android:textColor="@color/whiteTransparent95"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+        </RelativeLayout>
+
+    </RelativeLayout>
+</RelativeLayout>

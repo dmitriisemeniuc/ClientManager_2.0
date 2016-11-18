@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatEditText;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
@@ -16,6 +15,7 @@ import com.semeniuc.dmitrii.clientmanager.BaseActivity;
 import com.semeniuc.dmitrii.clientmanager.R;
 import com.semeniuc.dmitrii.clientmanager.main.MainActivity;
 import com.semeniuc.dmitrii.clientmanager.model.User;
+import com.semeniuc.dmitrii.clientmanager.registr.RegistrationActivity;
 import com.semeniuc.dmitrii.clientmanager.utils.ActivityUtils;
 import com.semeniuc.dmitrii.clientmanager.utils.Constants;
 import com.semeniuc.dmitrii.clientmanager.utils.GoogleAuthenticator;
@@ -26,7 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginActivity extends BaseActivity implements LoginView, View.OnClickListener {
+public class LoginActivity extends BaseActivity implements LoginView {
 
     private LoginPresenter presenter;
     private ProgressDialog progressDialog;
@@ -46,7 +46,7 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
     @OnClick(R.id.login_button) void emailLogin() {
         loginWithEmail();
     }
-    //@OnClick(R.id.login_registration_link) void register() { goToRegistrationActivity(); }
+    @OnClick(R.id.login_registration_link) void register() { goToRegistrationActivity(); }
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         ((App) getApplication()).getComponent().inject(this); // Dagger
@@ -100,11 +100,6 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
         googleAuthenticator.setGoogleApiClient(getApplicationContext(), this);
     }
 
-    @Override public void onClick(View v) {
-        presenter.validateCredentials(editTextEmail.getText().toString(),
-                editTextPassword.getText().toString());
-    }
-
     @Override protected void onDestroy() {
         presenter.onDestroy();
         super.onDestroy();
@@ -127,7 +122,7 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
 
     @Override public void showLoginMessage() {
         Toast.makeText(this, getResources().getString(R.string.logged_as) + ": "
-                + user.getEmail(), Toast.LENGTH_LONG).show();
+                + user.getEmail(), Toast.LENGTH_SHORT).show();
     }
 
     @Override public void showGoogleLoginError() {
@@ -148,5 +143,10 @@ public class LoginActivity extends BaseActivity implements LoginView, View.OnCli
     @Override public void showInvalidCredentialsMessage() {
         Toast.makeText(this, getResources().getString(R.string.invalid_credentials),
                 Toast.LENGTH_LONG).show();
+    }
+
+    private void goToRegistrationActivity() {
+        startActivity(new Intent(this, RegistrationActivity.class));
+        finish();
     }
 }

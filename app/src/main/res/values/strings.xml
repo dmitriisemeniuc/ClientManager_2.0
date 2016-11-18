@@ -58,7 +58,7 @@
     <string name="login_link">Login</string>
     <string name="logged_as">Logged as</string>
     <string name="confirmPassword">Confirm Password</string>
-    <string name="passwords_not_match">Passwords don\'t match</string>
+    <string name="password_does_not_match">Password doesn\'t match</string>
     <string name="email_registered">Email already registered</string>
     <string name="unable_save_user">Unable save user</string>
     <string name="user_login_failed">User login failed</string>

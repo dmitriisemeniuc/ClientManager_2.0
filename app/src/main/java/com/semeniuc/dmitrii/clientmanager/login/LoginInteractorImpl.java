@@ -1,9 +1,7 @@
 package com.semeniuc.dmitrii.clientmanager.login;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.ViewGroup;
@@ -27,7 +25,6 @@ import rx.schedulers.Schedulers;
 public class LoginInteractorImpl implements LoginInteractor {
 
     @Inject ActivityUtils utils;
-    @Inject Context context;
     @Inject User user;
     @Inject DatabaseTaskHelper dbHelper;
 
@@ -49,10 +46,10 @@ public class LoginInteractorImpl implements LoginInteractor {
     }
 
     @Override public void loginWithEmail(String email, String password, OnLoginFinishedListener listener) {
-        if(!isSignInFieldsValid(email, password, listener)) return;
+        if(!isLoginFieldsValid(email, password, listener)) return;
         User user = dbHelper.getUserByEmailAndPassword(email, password);
         if(user != null){
-            this.user = user;
+            setEmailUserDetails(user);
             utils.setUserInPrefs(Constants.REGISTERED_USER, this.user);
             listener.onSuccess();
         } else {
@@ -60,7 +57,13 @@ public class LoginInteractorImpl implements LoginInteractor {
         }
     }
 
-    private boolean isSignInFieldsValid(String email, String password,OnLoginFinishedListener listener) {
+    private void setEmailUserDetails(User user) {
+        this.user.setId(user.getId());
+        this.user.setEmail(user.getEmail());
+        this.user.setPassword(user.getPassword());
+    }
+
+    private boolean isLoginFieldsValid(String email, String password, OnLoginFinishedListener listener) {
         boolean valid = true;
         if(TextUtils.isEmpty(email)){
             listener.onUsernameError();
@@ -78,7 +81,7 @@ public class LoginInteractorImpl implements LoginInteractor {
      * It can be: user signed in with google account or logged via e-mail
      */
     @Override public void verifyUserType(final OnVerifyUserTypeFinishedListener listener) {
-        String userType = utils.getUserFromPrefs(context);
+        String userType = utils.getUserFromPrefs();
         if (userType.equals(Constants.GOOGLE_USER)) {
             listener.onSetGoogleApiClient();
             SharedPreferences settings = utils.getSharedPreferences(Constants.LOGIN_PREFS);
@@ -122,10 +125,11 @@ public class LoginInteractorImpl implements LoginInteractor {
         if (!result.isSuccess()) return;
         GoogleSignInAccount account = result.getSignInAccount();
         if (account == null || dbHelper == null) return;
-        user = dbHelper.getUserByEmail(account.getEmail());
+        User user = dbHelper.getUserByEmail(account.getEmail());
         Uri photoUrl = account.getPhotoUrl();
         if (null != user) {
-            if (null != photoUrl) user.setPhotoUrl(photoUrl.toString());
+            setEmailUserDetails(user);
+            if (null != photoUrl) this.user.setPhotoUrl(photoUrl.toString());
             presenter.onUpdateUI();
         }
     }
@@ -187,6 +191,8 @@ public class LoginInteractorImpl implements LoginInteractor {
             @Override
             public void onNext(Integer result) {
                 if (result == Constants.USER_SAVED) {
+                    User user = dbHelper.getUserByEmail(email);
+                    if(null != user) setEmailUserDetails(user);
                     listener.onUserSaved();
                 }
                 if (result == Constants.USER_NOT_SAVED || result == Constants.NO_DB_RESULT)
@@ -211,27 +217,6 @@ public class LoginInteractorImpl implements LoginInteractor {
             subscriber.onCompleted();
         }
     }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
-
-    @Override
-    public void login(final String username, final String password, final OnLoginFinishedListener listener) {
-        // Mock login. I'm creating a handler to delay the answer a couple of seconds
-        new Handler().postDelayed(new Runnable() {
-            @Override public void run() {
-                boolean error = false;
-                if (TextUtils.isEmpty(username)){
-                    listener.onUsernameError();
-                    error = true;
-                }
-                if (TextUtils.isEmpty(password)){
-                    listener.onPasswordError();
-                    error = true;
-                }
-                if (!error){
-                    listener.onSuccess();
-                }
-            }
-        }, 2000);
-    }
 
     @Override public void hideKeyboard(ViewGroup layout) {
         utils.hideKeyboard(layout);

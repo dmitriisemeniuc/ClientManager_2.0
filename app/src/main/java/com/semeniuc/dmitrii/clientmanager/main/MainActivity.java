@@ -37,7 +37,7 @@ public class MainActivity extends BaseActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ((App)getApplication()).getComponent().inject(this); // Dagger
+        ((App) getApplication()).getComponent().inject(this); // Dagger
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -124,7 +124,7 @@ public class MainActivity extends BaseActivity
     }
 
     @Override public void onLogout() {
-        String userType = utils.getUserFromPrefs(this);
+        String userType = utils.getUserFromPrefs();
         if (userType.equals(Constants.GOOGLE_USER)) {
             Auth.GoogleSignInApi.signOut(googleAuthenticator.getApiClient())
                     .setResultCallback(status -> backToLoginActivity(false));
@@ -137,7 +137,7 @@ public class MainActivity extends BaseActivity
      * Returning of the user back to sign in activity
      */
     private void backToLoginActivity(boolean back) {
-        if(!back) return;
+        if (!back) return;
         startActivity(new Intent(this, LoginActivity.class));
         finish();
     }

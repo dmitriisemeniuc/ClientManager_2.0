@@ -15,13 +15,6 @@ public class LoginPresenterImpl implements LoginPresenter, LoginInteractor.OnLog
         this.loginInteractor = new LoginInteractorImpl();
     }
 
-    @Override public void validateCredentials(String username, String password) {
-        if (loginView != null) {
-            loginView.showProgress();
-        }
-        loginInteractor.login(username, password, this);
-    }
-
     @Override public void onLoginWithGoogle(GoogleSignInResult result) {
         loginInteractor.loginWithGoogle(result, this);
     }
@@ -54,7 +47,10 @@ public class LoginPresenterImpl implements LoginPresenter, LoginInteractor.OnLog
     }
 
     @Override public void onSuccess() {
-        if (loginView != null) loginView.navigateToHome();
+        if (loginView != null){
+            loginView.navigateToHome();
+            loginView.showLoginMessage();
+        }
     }
 
     @Override public void onInvalidCredentials() {
@@ -97,6 +93,7 @@ public class LoginPresenterImpl implements LoginPresenter, LoginInteractor.OnLog
 
     @Override public void onUpdateUI() {
         loginView.navigateToHome();
+        loginView.showLoginMessage();
     }
 
     @Override public void onSilentSignInWithGoogle() {

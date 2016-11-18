@@ -12,6 +12,9 @@ import com.semeniuc.dmitrii.clientmanager.modules.DatabaseTaskHelperModule;
 import com.semeniuc.dmitrii.clientmanager.modules.RepositoryModule;
 import com.semeniuc.dmitrii.clientmanager.modules.UserModule;
 import com.semeniuc.dmitrii.clientmanager.modules.UtilsModule;
+import com.semeniuc.dmitrii.clientmanager.registr.RegistrationActivity;
+import com.semeniuc.dmitrii.clientmanager.registr.RegistrationInteractorImpl;
+import com.semeniuc.dmitrii.clientmanager.registr.RegistrationPresenterImpl;
 
 import javax.inject.Singleton;
 
@@ -32,8 +35,11 @@ import dagger.Component;
 public interface AppComponent {
 
     void inject(LoginActivity loginActivity);
-    void inject(MainActivity mainActivity);
     void inject(LoginInteractorImpl loginInteractor);
     void inject(LoginPresenterImpl loginPresenter);
+    void inject(RegistrationActivity registrationActivity);
+    void inject(RegistrationInteractorImpl registrationInteractor);
+    void inject(RegistrationPresenterImpl registrationPresenter);
+    void inject(MainActivity mainActivity);
     void inject(DatabaseTaskHelper dbTaskHelper);
 }
