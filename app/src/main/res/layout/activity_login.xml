@@ -1,43 +1,128 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="250dp"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:layout_marginTop="16dp"
-    >
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/main_login_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/main_background"
+                android:orientation="vertical"
+                tools:context=".login.LoginActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#B3000000"
+        android:focusableInTouchMode="true">
 
-    <EditText
-        android:id="@+id/username"
+    <RelativeLayout
+        android:id="@+id/login_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:hint="@string/user_name"
-        android:drawableLeft="@android:drawable/ic_dialog_alert"
-        android:drawablePadding="8dp"
-        />
-    <EditText
-        android:id="@+id/password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:hint="@string/password"
-        android:inputType="textPassword"
-        android:drawableLeft="@android:drawable/ic_lock_idle_low_battery"
-        android:drawablePadding="8dp"
-        />
-    <Button
-        android:id="@+id/button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/log_in"
-        />
-    <ProgressBar
-        android:id="@+id/progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:visibility="gone"
-        />
+        android:layout_centerVertical="true">
 
-</LinearLayout>
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/login_et_email"
+            style="@style/loginField"
+            android:hint="@string/email"
+            android:inputType="textEmailAddress"/>
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/login_et_password"
+            style="@style/loginField"
+            android:layout_below="@+id/login_et_email"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:hint="@string/password"
+            android:inputType="textVisiblePassword"/>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/login_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/login_et_password"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:background="@drawable/login_button"
+            android:textColor="@color/whiteTransparent70"
+            android:text="@string/login"/>
+
+        <RelativeLayout
+            android:id="@+id/login_line_separator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/login_button"
+            android:layout_centerInParent="true">
+
+            <View
+                android:id="@+id/login_divider_1"
+                android:layout_width="100dp"
+                android:layout_height="1px"
+                android:layout_centerVertical="true"
+                android:background="@color/whiteTransparent70"/>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/login_or"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_toEndOf="@+id/login_divider_1"
+                android:layout_toRightOf="@+id/login_divider_1"
+                android:fontFamily="monospace"
+                android:text="@string/or"
+                android:textColor="@color/whiteTransparent70"/>
+
+            <View
+                android:layout_width="100dp"
+                android:layout_height="1px"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/login_or"
+                android:layout_toRightOf="@+id/login_or"
+                android:background="@color/whiteTransparent70"/>
+        </RelativeLayout>
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/login_with_google_button"
+            style="@style/Login"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/login_line_separator"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            app:buttonSize="wide"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/login_registration_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:gravity="center_horizontal">
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/login_registration_question"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:text="@string/do_not_have_account_yet"
+            android:textColor="@color/whiteTransparent70"
+            android:textSize="16sp"/>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/login_registration_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/login_registration_question"
+            android:layout_toRightOf="@+id/login_registration_question"
+            android:fontFamily="sans-serif"
+            android:text="@string/registration_link"
+            android:textColor="@color/whiteTransparent95"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+    </RelativeLayout>
+
+    </RelativeLayout>
+</RelativeLayout>

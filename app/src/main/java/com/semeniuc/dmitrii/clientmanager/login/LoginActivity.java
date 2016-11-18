@@ -1,53 +1,94 @@
 package com.semeniuc.dmitrii.clientmanager.login;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.ProgressBar;
+import android.support.v7.widget.AppCompatEditText;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
-import com.semeniuc.dmitrii.clientmanager.main.MainActivity;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.api.OptionalPendingResult;
+import com.semeniuc.dmitrii.clientmanager.App;
+import com.semeniuc.dmitrii.clientmanager.BaseActivity;
 import com.semeniuc.dmitrii.clientmanager.R;
+import com.semeniuc.dmitrii.clientmanager.main.MainActivity;
+import com.semeniuc.dmitrii.clientmanager.model.User;
+import com.semeniuc.dmitrii.clientmanager.registr.RegistrationActivity;
+import com.semeniuc.dmitrii.clientmanager.utils.ActivityUtils;
+import com.semeniuc.dmitrii.clientmanager.utils.Constants;
+import com.semeniuc.dmitrii.clientmanager.utils.GoogleAuthenticator;
 
-public class LoginActivity extends AppCompatActivity implements LoginView, View.OnClickListener {
+import javax.inject.Inject;
 
-    private ProgressBar progressBar;
-    private EditText username;
-    private EditText password;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+public class LoginActivity extends BaseActivity implements LoginView {
+
     private LoginPresenter presenter;
+    private ProgressDialog progressDialog;
 
-    @Override protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+    @Inject ActivityUtils utils;
+    @Inject GoogleAuthenticator googleAuthenticator;
+    @Inject User user;
 
-        progressBar = (ProgressBar) findViewById(R.id.progress);
-        username = (EditText) findViewById(R.id.username);
-        password = (EditText) findViewById(R.id.password);
-        findViewById(R.id.button).setOnClickListener(this);
+    @BindView(R.id.login_et_email) AppCompatEditText editTextEmail;
+    @BindView(R.id.login_et_password) AppCompatEditText editTextPassword;
+    @BindView(R.id.main_login_layout) ViewGroup mainLayout;
 
-        setPresenter(new LoginPresenterImpl(this));
+    @OnClick(R.id.login_with_google_button) void googleLogin() {
+        loginWithGoogle();
     }
 
-    @Override
-    public void setPresenter(LoginPresenter presenter) {
+    @OnClick(R.id.login_button) void emailLogin() {
+        loginWithEmail();
+    }
+    @OnClick(R.id.login_registration_link) void register() { goToRegistrationActivity(); }
+
+    @Override protected void onCreate(Bundle savedInstanceState) {
+        ((App) getApplication()).getComponent().inject(this); // Dagger
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+        ButterKnife.bind(this); // Butterknife
+        setPresenter(new LoginPresenterImpl(this));
+        presenter.verifyUserType();
+    }
+
+    @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.RC_SIGN_IN) {
+            presenter.onLoginWithGoogle(Auth.GoogleSignInApi.getSignInResultFromIntent(data));
+        }
+    }
+
+    @Override public void setPresenter(LoginPresenter presenter) {
         this.presenter = presenter;
     }
 
     @Override public void showProgress() {
-        progressBar.setVisibility(View.VISIBLE);
+        if (null == progressDialog) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage(getString(R.string.please_wait));
+            progressDialog.setIndeterminate(true);
+        }
+        progressDialog.show();
     }
 
     @Override public void hideProgress() {
-        progressBar.setVisibility(View.GONE);
+        if (null != progressDialog && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
     }
 
     @Override public void setUsernameError() {
-        username.setError(getString(R.string.username_error));
+        editTextEmail.setError(getString(R.string.username_error));
     }
 
     @Override public void setPasswordError() {
-        password.setError(getString(R.string.password_error));
+        editTextPassword.setError(getString(R.string.password_error));
     }
 
     @Override public void navigateToHome() {
@@ -55,12 +96,57 @@ public class LoginActivity extends AppCompatActivity implements LoginView, View.
         finish();
     }
 
-    @Override public void onClick(View v) {
-        presenter.validateCredentials(username.getText().toString(), password.getText().toString());
+    @Override public void setGoogleApiClient() {
+        googleAuthenticator.setGoogleApiClient(getApplicationContext(), this);
     }
 
     @Override protected void onDestroy() {
         presenter.onDestroy();
         super.onDestroy();
+    }
+
+    @Override public void loginWithGoogle() {
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleAuthenticator.getApiClient());
+        startActivityForResult(signInIntent, Constants.RC_SIGN_IN);
+    }
+
+    @Override public void loginWithEmail() {
+        presenter.hideKeyboard(mainLayout);
+        presenter.onLoginWithEmail(editTextEmail.getText().toString(),
+                editTextPassword.getText().toString());
+    }
+
+    @Override public OptionalPendingResult<GoogleSignInResult> getOptionalPendingResult() {
+        return googleAuthenticator.getOptionalPendingResult();
+    }
+
+    @Override public void showLoginMessage() {
+        Toast.makeText(this, getResources().getString(R.string.logged_as) + ": "
+                + user.getEmail(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override public void showGoogleLoginError() {
+        Toast.makeText(this, getResources().getString(R.string.something_wrong),
+                Toast.LENGTH_LONG).show();
+    }
+
+    @Override public void showNoInternetAccessMessage() {
+        Toast.makeText(this, getResources().getString(R.string.no_internet_access),
+                Toast.LENGTH_LONG).show();
+    }
+
+    @Override public void showUserSavingFailedMessage() {
+        Toast.makeText(this, getResources().getString(R.string.user_saving_failed),
+                Toast.LENGTH_LONG).show();
+    }
+
+    @Override public void showInvalidCredentialsMessage() {
+        Toast.makeText(this, getResources().getString(R.string.invalid_credentials),
+                Toast.LENGTH_LONG).show();
+    }
+
+    private void goToRegistrationActivity() {
+        startActivity(new Intent(this, RegistrationActivity.class));
+        finish();
     }
 }

@@ -5,10 +5,81 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
-    <string name="user_name">username</string>
-    <string name="password">password</string>
+    <string name="email">Email</string>
+    <string name="login">Login</string>
+    <string name="or">OR</string>
+    <string name="password">Password</string>
     <string name="log_in">Log in</string>
-    <string name="title_activity_main">MVP Example</string>
-    <string name="username_error">Username cannot be empty</string>
+    <string name="title_activity_main">Appointments</string>
+    <string name="username_error">Email cannot be empty</string>
     <string name="password_error">Password cannot be empty</string>
+
+    <!-- Dialog -->
+    <string name="please_wait">Please wait</string>
+
+    <!-- Login -->
+    <string name="welcome_msg">Welcome to the Client Manager app</string>
+    <string name="login_msg">Please login with your google account</string>
+
+    <!-- Logout, disconnect account -->
+    <string name="menu_logout">Logout</string>
+    <string name="menu_disconnect_account">Disconnect account</string>
+
+    <string name="main_activity">Main Activity</string>
+    <string name="label_add_appointment">add Appointment</string>
+    <string name="appointment">Appointment</string>
+    <string name="client">Client</string>
+    <string name="phone">Phone</string>
+    <string name="service">Service</string>
+    <string name="date_label">Date:</string>
+    <string name="info">Info</string>
+    <string name="save">Save</string>
+    <string name="fill_the_form">Fill the form</string>
+    <string name="field_is_required">Field is required</string>
+    <string name="appointment_added">Appointment added</string>
+    <string name="saving_failed">Saving failed</string>
+    <string name="appointment_with_title">Appointment with title</string>
+    <string name="and_with_client">and with client</string>
+    <string name="already_exists">already exists</string>
+    <string name="cannot_save_appointment">Cannot save an appointment</string>
+    <string name="delete">Delete</string>
+    <string name="update">Update</string>
+    <string name="appointment_updated">Appointment updated</string>
+    <string name="updating_failed">Updating failed</string>
+    <string name="appointment_deleted">Appointment deleted</string>
+    <string name="deleting_failed">Deleting failed</string>
+    <string name="user_saving_failed">User saving failed</string>
+    <string name="choose_date">Choose date</string>
+    <string name="choose_time">Choose time</string>
+    <string name="do_not_have_account_yet">Don\'t have account yet?</string>
+    <string name="registration_link">Registration</string>
+    <string name="registration">Registration</string>
+    <string name="already_have_account">Already have an account?</string>
+    <string name="login_link">Login</string>
+    <string name="logged_as">Logged as</string>
+    <string name="confirmPassword">Confirm Password</string>
+    <string name="password_does_not_match">Password doesn\'t match</string>
+    <string name="email_registered">Email already registered</string>
+    <string name="unable_save_user">Unable save user</string>
+    <string name="user_login_failed">User login failed</string>
+    <string name="invalid_credentials">Invalid email and/or password</string>
+    <string name="paid">Paid</string>
+    <string name="done">Done</string>
+    <string name="services">Services:</string>
+    <string name="tools">Tools:</string>
+    <string name="user_equal_null">Users is null</string>
+    <string name="hint_zero">0</string>
+    <string name="currency">lei</string>
+    <string name="verify_internet_connection">Please, verify internet connection</string>
+    <string name="something_wrong">Something went wrong</string>
+    <string name="no_internet_access">No internet access available</string>
+    <string name="grant_call_permission">In order to make calls, please grant call permission</string>
+    <string name="logout">Logout</string>
+    <string name="order_by_date">Order by Date</string>
+    <string name="order_by_client">Order by Client</string>
+    <string name="archived_order_by_date">Archived order by Date</string>
+    <string name="archived_order_by_client">Archived order by Client</string>
+    <string name="profile_image">Profile image</string>
+    <string name="background_image">Background image</string>
+    <string name="address">Address</string>
 </resources>
