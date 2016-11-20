@@ -13,12 +13,6 @@ import dagger.Provides;
 @Module
 public final class UtilsModule {
 
-    /*private final Context context;
-
-    public UtilsModule(Context context) {
-        this.context = context;
-    }*/
-
     @Provides
     @NonNull
     @Singleton

@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.api.OptionalPendingResult;
 import com.semeniuc.dmitrii.clientmanager.App;
 import com.semeniuc.dmitrii.clientmanager.BaseActivity;
 import com.semeniuc.dmitrii.clientmanager.R;
@@ -49,12 +47,12 @@ public class LoginActivity extends BaseActivity implements LoginView {
     @OnClick(R.id.login_registration_link) void register() { goToRegistrationActivity(); }
 
     @Override protected void onCreate(Bundle savedInstanceState) {
-        ((App) getApplication()).getComponent().inject(this); // Dagger
+        ((App) getApplication()).getComponent().inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        ButterKnife.bind(this); // Butterknife
+        ButterKnife.bind(this);
         setPresenter(new LoginPresenterImpl(this));
-        presenter.verifyUserType();
+        presenter.verifyUserType(this, this);
     }
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -96,10 +94,6 @@ public class LoginActivity extends BaseActivity implements LoginView {
         finish();
     }
 
-    @Override public void setGoogleApiClient() {
-        googleAuthenticator.setGoogleApiClient(getApplicationContext(), this);
-    }
-
     @Override protected void onDestroy() {
         presenter.onDestroy();
         super.onDestroy();
@@ -114,10 +108,6 @@ public class LoginActivity extends BaseActivity implements LoginView {
         presenter.hideKeyboard(mainLayout);
         presenter.onLoginWithEmail(editTextEmail.getText().toString(),
                 editTextPassword.getText().toString());
-    }
-
-    @Override public OptionalPendingResult<GoogleSignInResult> getOptionalPendingResult() {
-        return googleAuthenticator.getOptionalPendingResult();
     }
 
     @Override public void showLoginMessage() {

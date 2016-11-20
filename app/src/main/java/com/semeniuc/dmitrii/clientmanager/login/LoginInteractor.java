@@ -1,5 +1,7 @@
 package com.semeniuc.dmitrii.clientmanager.login;
 
+import android.content.Context;
+import android.support.v4.app.FragmentActivity;
 import android.view.ViewGroup;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
@@ -32,10 +34,6 @@ public interface LoginInteractor {
 
     interface OnVerifyUserTypeFinishedListener {
 
-        void onSilentSignInWithGoogle();
-
-        void onSetGoogleApiClient();
-
         void onUserSaved();
 
         void onUserSavingFailed();
@@ -50,7 +48,8 @@ public interface LoginInteractor {
 
     void loginWithEmail(String email, String password, OnLoginFinishedListener listener);
 
-    void verifyUserType(OnVerifyUserTypeFinishedListener listener);
+    void verifyUserType(Context ctx, FragmentActivity activity,
+                        OnVerifyUserTypeFinishedListener listener, LoginPresenter presenter);
 
     void silentSignInWithGoogle(OptionalPendingResult<GoogleSignInResult> opr,
                                 LoginPresenter presenter);

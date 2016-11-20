@@ -1,8 +1,10 @@
 package com.semeniuc.dmitrii.clientmanager.login;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
@@ -14,6 +16,7 @@ import com.semeniuc.dmitrii.clientmanager.data.local.DatabaseTaskHelper;
 import com.semeniuc.dmitrii.clientmanager.model.User;
 import com.semeniuc.dmitrii.clientmanager.utils.ActivityUtils;
 import com.semeniuc.dmitrii.clientmanager.utils.Constants;
+import com.semeniuc.dmitrii.clientmanager.utils.GoogleAuthenticator;
 
 import javax.inject.Inject;
 
@@ -27,28 +30,30 @@ public class LoginInteractorImpl implements LoginInteractor {
     @Inject ActivityUtils utils;
     @Inject User user;
     @Inject DatabaseTaskHelper dbHelper;
+    @Inject GoogleAuthenticator authenticator;
 
     private String email;
 
-    public LoginInteractorImpl(){
+    public LoginInteractorImpl() {
         App.getInstance().getComponent().inject(this);
     }
 
-    @Override public void loginWithGoogle(GoogleSignInResult result, OnGoogleLoginFinishedListener listener) {
+    @Override
+    public void loginWithGoogle(GoogleSignInResult result, OnGoogleLoginFinishedListener listener) {
         if (result.isSuccess()) {
             boolean userCreated = setGoogleUserDetails(result);
-            if(userCreated) saveGoogleUser(listener);
-        }
-        else if (!utils.isNetworkAvailable())
+            if (userCreated) saveGoogleUser(listener);
+        } else if (!utils.isNetworkAvailable())
             listener.onNoInternetAccess();
         else
             listener.onGoogleLoginError();
     }
 
-    @Override public void loginWithEmail(String email, String password, OnLoginFinishedListener listener) {
-        if(!isLoginFieldsValid(email, password, listener)) return;
+    @Override
+    public void loginWithEmail(String email, String password, OnLoginFinishedListener listener) {
+        if (!isLoginFieldsValid(email, password, listener)) return;
         User user = dbHelper.getUserByEmailAndPassword(email, password);
-        if(user != null){
+        if (user != null) {
             setEmailUserDetails(user);
             utils.setUserInPrefs(Constants.REGISTERED_USER, this.user);
             listener.onSuccess();
@@ -65,11 +70,11 @@ public class LoginInteractorImpl implements LoginInteractor {
 
     private boolean isLoginFieldsValid(String email, String password, OnLoginFinishedListener listener) {
         boolean valid = true;
-        if(TextUtils.isEmpty(email)){
+        if (TextUtils.isEmpty(email)) {
             listener.onUsernameError();
             valid = false;
         }
-        if(TextUtils.isEmpty(password)){
+        if (TextUtils.isEmpty(password)) {
             listener.onPasswordError();
             valid = false;
         }
@@ -80,13 +85,16 @@ public class LoginInteractorImpl implements LoginInteractor {
      * Identify the user type
      * It can be: user signed in with google account or logged via e-mail
      */
-    @Override public void verifyUserType(final OnVerifyUserTypeFinishedListener listener) {
+    @Override public void verifyUserType(Context context, FragmentActivity activity,
+                                         final OnVerifyUserTypeFinishedListener listener,
+                                         LoginPresenter presenter) {
         String userType = utils.getUserFromPrefs();
         if (userType.equals(Constants.GOOGLE_USER)) {
-            listener.onSetGoogleApiClient();
+            authenticator.setGoogleApiClient(context, activity);
             SharedPreferences settings = utils.getSharedPreferences(Constants.LOGIN_PREFS);
             boolean loggedIn = settings.getBoolean(Constants.LOGGED, false);
-            if (loggedIn) listener.onSilentSignInWithGoogle();
+            if (loggedIn)
+                silentSignInWithGoogle(authenticator.getOptionalPendingResult(), presenter);
             return;
         }
         if (userType.equals(Constants.REGISTERED_USER)) {
@@ -98,12 +106,13 @@ public class LoginInteractorImpl implements LoginInteractor {
             }
             return;
         }
-        if (userType.equals(Constants.NEW_USER)) listener.onSetGoogleApiClient();
+        if (userType.equals(Constants.NEW_USER))
+            authenticator.setGoogleApiClient(context, activity);
     }
 
     @Override
     public void silentSignInWithGoogle(final OptionalPendingResult<GoogleSignInResult> opr,
-                                                 final LoginPresenter presenter) {
+                                       final LoginPresenter presenter) {
         if (opr.isDone()) {
             GoogleSignInResult result = opr.get();
             handleGoogleSignInResult(result, presenter);
@@ -192,7 +201,7 @@ public class LoginInteractorImpl implements LoginInteractor {
             public void onNext(Integer result) {
                 if (result == Constants.USER_SAVED) {
                     User user = dbHelper.getUserByEmail(email);
-                    if(null != user) setEmailUserDetails(user);
+                    if (null != user) setEmailUserDetails(user);
                     listener.onUserSaved();
                 }
                 if (result == Constants.USER_NOT_SAVED || result == Constants.NO_DB_RESULT)

@@ -1,5 +1,7 @@
 package com.semeniuc.dmitrii.clientmanager.login;
 
+import android.content.Context;
+import android.support.v4.app.FragmentActivity;
 import android.view.ViewGroup;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
@@ -28,8 +30,8 @@ public class LoginPresenterImpl implements LoginPresenter, LoginInteractor.OnLog
     }
 
     // It can be: user signed in with google or registered with e-mail
-    @Override public void verifyUserType() {
-        loginInteractor.verifyUserType(this);
+    @Override public void verifyUserType(Context context, FragmentActivity activity) {
+        loginInteractor.verifyUserType(context, activity, this, this);
     }
 
     @Override public void onUsernameError() {
@@ -94,14 +96,6 @@ public class LoginPresenterImpl implements LoginPresenter, LoginInteractor.OnLog
     @Override public void onUpdateUI() {
         loginView.navigateToHome();
         loginView.showLoginMessage();
-    }
-
-    @Override public void onSilentSignInWithGoogle() {
-        loginInteractor.silentSignInWithGoogle(loginView.getOptionalPendingResult(), this);
-    }
-
-    @Override public void onSetGoogleApiClient() {
-        loginView.setGoogleApiClient();
     }
 
     @Override public void onUserSaved() {

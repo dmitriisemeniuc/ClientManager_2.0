@@ -1,5 +1,8 @@
 package com.semeniuc.dmitrii.clientmanager.login;
 
+import android.content.Context;
+import android.support.v4.app.FragmentActivity;
+
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.semeniuc.dmitrii.clientmanager.BasePresenter;
 
@@ -19,5 +22,5 @@ public interface LoginPresenter extends BasePresenter{
 
     void onDestroy();
 
-    void verifyUserType();
+    void verifyUserType(Context context, FragmentActivity activity);
 }
