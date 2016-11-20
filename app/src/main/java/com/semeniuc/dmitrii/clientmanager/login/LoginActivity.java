@@ -11,7 +11,7 @@ import com.google.android.gms.auth.api.Auth;
 import com.semeniuc.dmitrii.clientmanager.App;
 import com.semeniuc.dmitrii.clientmanager.BaseActivity;
 import com.semeniuc.dmitrii.clientmanager.R;
-import com.semeniuc.dmitrii.clientmanager.main.MainActivity;
+import com.semeniuc.dmitrii.clientmanager.appointments.AppointmentActivity;
 import com.semeniuc.dmitrii.clientmanager.model.User;
 import com.semeniuc.dmitrii.clientmanager.registr.RegistrationActivity;
 import com.semeniuc.dmitrii.clientmanager.utils.ActivityUtils;
@@ -90,7 +90,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
     }
 
     @Override public void navigateToHome() {
-        startActivity(new Intent(this, MainActivity.class));
+        startActivity(new Intent(this, AppointmentActivity.class));
         finish();
     }
 

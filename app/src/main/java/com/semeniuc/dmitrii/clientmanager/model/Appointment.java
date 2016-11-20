@@ -133,6 +133,14 @@ public class Appointment implements Parcelable {
                 }
             };
 
+    public boolean isActive() {
+        return !done;
+    }
+
+    public boolean isCompleted() {
+        return done;
+    }
+
     public long getId() {
         return id;
     }

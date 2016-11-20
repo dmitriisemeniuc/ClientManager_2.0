@@ -15,21 +15,6 @@ public class UserRepository implements IRepository {
 
     public static final String LOG_TAG = UserRepository.class.getSimpleName();
     public static final boolean DEBUG = Constants.DEBUG;
-    /*private static final UserRepository instance = new UserRepository();
-
-    private static DatabaseHelper helper;
-
-    static {
-        DatabaseManager.init(App.getInstance().getApplicationContext());
-        helper = DatabaseManager.getInstance().getHelper();
-    }
-
-    public UserRepository() {
-    }
-
-    public static UserRepository getInstance() {
-        return instance;
-    }*/
 
     private DatabaseHelper helper;
 

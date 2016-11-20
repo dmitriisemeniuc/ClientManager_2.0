@@ -5,12 +5,15 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
-import com.semeniuc.dmitrii.clientmanager.R;
 import com.semeniuc.dmitrii.clientmanager.model.Appointment;
 import com.semeniuc.dmitrii.clientmanager.model.User;
 
@@ -28,20 +31,14 @@ public class ActivityUtils implements Utils.Activity {
         this.context = context;
     }
 
-    public String getMessage() {
-        return "Hello from Utils";
-    }
-
-    public boolean isValidEditText(AppCompatEditText editText) {
-        boolean empty = isEditTextEmpty(editText);
-        if (empty) editText.setError(context.getResources().getString(R.string.field_is_required));
-        return !empty;
-    }
-
-    public boolean isValidTextView(AppCompatTextView textView) {
-        boolean empty = isTextViewEmpty(textView);
-        if (empty) textView.setError(context.getResources().getString(R.string.field_is_required));
-        return !empty;
+   /** The {@code fragment} is added to the container view with id {@code frameId}. The operation is
+    * performed by the {@code fragmentManager}
+    */
+    public static void addFragmentToActivity (@NonNull FragmentManager fragmentManager,
+                                              @NonNull Fragment fragment, int frameId) {
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.add(frameId, fragment);
+            transaction.commit();
     }
 
     public boolean isEditTextEmpty(AppCompatEditText et) {

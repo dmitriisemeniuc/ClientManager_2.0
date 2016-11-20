@@ -1,10 +1,10 @@
 package com.semeniuc.dmitrii.clientmanager;
 
+import com.semeniuc.dmitrii.clientmanager.appointments.AppointmentActivity;
 import com.semeniuc.dmitrii.clientmanager.data.local.DatabaseTaskHelper;
 import com.semeniuc.dmitrii.clientmanager.login.LoginActivity;
 import com.semeniuc.dmitrii.clientmanager.login.LoginInteractorImpl;
 import com.semeniuc.dmitrii.clientmanager.login.LoginPresenterImpl;
-import com.semeniuc.dmitrii.clientmanager.main.MainActivity;
 import com.semeniuc.dmitrii.clientmanager.modules.AppModule;
 import com.semeniuc.dmitrii.clientmanager.modules.AuthenticatorModule;
 import com.semeniuc.dmitrii.clientmanager.modules.DatabaseHelperModule;
@@ -33,13 +33,16 @@ import dagger.Component;
 )
 @Singleton
 public interface AppComponent {
-
+    // Login
     void inject(LoginActivity loginActivity);
     void inject(LoginInteractorImpl loginInteractor);
     void inject(LoginPresenterImpl loginPresenter);
+    // Registration
     void inject(RegistrationActivity registrationActivity);
     void inject(RegistrationInteractorImpl registrationInteractor);
     void inject(RegistrationPresenterImpl registrationPresenter);
-    void inject(MainActivity mainActivity);
+    // Appointment
+    void inject(AppointmentActivity appointmentctivity);
+    // Data
     void inject(DatabaseTaskHelper dbTaskHelper);
 }

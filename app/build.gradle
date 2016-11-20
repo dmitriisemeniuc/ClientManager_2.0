@@ -64,6 +64,8 @@ dependencies {
     compile "com.android.support:design:$rootProject.supportLibraryVersion"
     compile "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
     compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
+    compile "com.android.support.test.espresso:espresso-idling-resource:$rootProject.espressoVersion"
+    compile "com.google.guava:guava:$rootProject.guavaVersion"
     // Google services dependencies
     compile "com.google.gms:google-services:$rootProject.ext.googleServiceVersion"
     compile "com.google.android.gms:play-services-auth:$rootProject.ext.playServicesAuthVersion"

@@ -25,7 +25,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
         </activity>
         <activity
-            android:name=".main.MainActivity"
+            android:name=".appointments.AppointmentActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>

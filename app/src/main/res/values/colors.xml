@@ -8,6 +8,8 @@
     <color name="textHint">#BDBDBD</color>
     <color name="icons">#212121</color>
     <color name="divider">#BDBDBD</color>
+    <color name="transparent50">#95000000</color>
+    <color name="transparent70">#B3000000</color>
     <color name="whiteTransparent70">#B3FFFFFF</color>
     <color name="whiteTransparent95">#F2FFFFFF</color>
     <color name="orangeBackground">#FF6D00</color>
@@ -31,4 +33,6 @@
     <color name="lightGreen">#DCEDC8</color>
     <color name="lightYellow">#FFF9C4</color>
     <color name="white">#fff</color>
+    <drawable name="touchFeedback">#CFD8DC</drawable>
+    <drawable name="completedTaskBackground">#CCCCCC</drawable>
 </resources>

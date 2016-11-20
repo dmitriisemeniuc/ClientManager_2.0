@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.semeniuc.dmitrii.clientmanager.appointments.ScrollChildSwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/refresh_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/appointmentsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:orientation="vertical"
+        android:background="@drawable/main_background">
+
+        <LinearLayout
+            android:id="@+id/appointmentsLL"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/filteringLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginLeft="@dimen/list_item_padding"
+                android:layout_marginRight="@dimen/list_item_padding"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:gravity="center_vertical"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+
+            <ListView
+                android:id="@+id/appointments_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/noAppointments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical"
+            android:background="@drawable/shape">
+
+            <ImageView
+                android:id="@+id/noAppointmentsIcon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:src="@mipmap/ic_launcher"/>
+
+            <TextView
+                android:id="@+id/noAppointmentsMain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/list_item_padding"
+                android:text="@string/no_appointments_all"
+                android:textColor="@color/whiteTransparent95"/>
+
+            <TextView
+                android:id="@+id/noAppointmentsAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:background="@drawable/touch_feedback"
+                android:gravity="center"
+                android:text="@string/no_appointments_add"
+                android:textColor="@color/whiteTransparent95"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+</com.semeniuc.dmitrii.clientmanager.appointments.ScrollChildSwipeRefreshLayout>
