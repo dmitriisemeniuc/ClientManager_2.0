@@ -3,6 +3,7 @@ package com.semeniuc.dmitrii.clientmanager;
 import android.app.Application;
 
 import com.semeniuc.dmitrii.clientmanager.modules.AppModule;
+import com.semeniuc.dmitrii.clientmanager.modules.AppointmentsLocalDataSourceModule;
 import com.semeniuc.dmitrii.clientmanager.modules.AuthenticatorModule;
 import com.semeniuc.dmitrii.clientmanager.modules.DatabaseHelperModule;
 import com.semeniuc.dmitrii.clientmanager.modules.DatabaseTaskHelperModule;
@@ -33,6 +34,7 @@ public class App extends Application {
                 .userModule(new UserModule())
                 .databaseHelperModule(new DatabaseHelperModule())
                 .databaseTaskHelperModule(new DatabaseTaskHelperModule())
+                .appointmentsLocalDataSourceModule(new AppointmentsLocalDataSourceModule())
                 .repositoryModule(new RepositoryModule())
                 .build();
     }

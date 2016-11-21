@@ -11,8 +11,8 @@ import android.widget.Toast;
 import com.semeniuc.dmitrii.clientmanager.App;
 import com.semeniuc.dmitrii.clientmanager.BaseActivity;
 import com.semeniuc.dmitrii.clientmanager.R;
+import com.semeniuc.dmitrii.clientmanager.appointments.AppointmentActivity;
 import com.semeniuc.dmitrii.clientmanager.login.LoginActivity;
-import com.semeniuc.dmitrii.clientmanager.main.MainActivity;
 import com.semeniuc.dmitrii.clientmanager.model.User;
 
 import javax.inject.Inject;
@@ -69,7 +69,7 @@ public class RegistrationActivity extends BaseActivity implements RegistrationVi
     }
 
     @Override public void navigateToHome() {
-        startActivity(new Intent(this, MainActivity.class));
+        startActivity(new Intent(this, AppointmentActivity.class));
         finish();
     }
 

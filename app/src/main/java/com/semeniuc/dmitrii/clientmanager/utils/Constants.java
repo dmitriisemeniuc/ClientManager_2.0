@@ -20,6 +20,7 @@ public class Constants {
     public static final int NO_DB_RESULT = 404;
     public static final int SIZE_EMPTY = 0;
     public static final int RC_SIGN_IN = 9001;
+    public static final boolean REMOTE_ACCESS_ENABLED = false;
 
     public static final boolean DEBUG = true;
     public static final String DOT = ".";

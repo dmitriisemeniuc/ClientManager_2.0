@@ -22,7 +22,7 @@ public class Appointment implements Parcelable {
     public static final String DATE_FIELD_NAME = "date";
     public static final String SUM_FIELD_NAME = "sum";
     public static final String PAID_FIELD_NAME = "paid";
-    public static final String DONE_FIELD_NAME = "done";
+    public static final String COMPLETED_FIELD_NAME = "completed";
 
     @DatabaseField(generatedId = true, columnName = ID_FIELD_NAME)
     private long id;
@@ -49,29 +49,29 @@ public class Appointment implements Parcelable {
     private String sum;
     @DatabaseField(canBeNull = false, columnName = PAID_FIELD_NAME)
     private boolean paid;
-    @DatabaseField(canBeNull = false, columnName = DONE_FIELD_NAME)
-    private boolean done;
+    @DatabaseField(canBeNull = false, columnName = COMPLETED_FIELD_NAME)
+    private boolean completed;
 
     public Appointment() {
     }
 
     // Constructor for creating new Appointment without id
     public Appointment(User user, Client client, Service service,
-                       Tools tools, String info, Date date, String sum, boolean paid, boolean done) {
+                       Tools tools, String info, Date date, String sum, boolean paid, boolean completed) {
         this.user = user;
         this.client = client;
         this.service = service;
         this.tools = tools;
         this.sum = sum;
         this.paid = paid;
-        this.done = done;
+        this.completed = completed;
         this.info = info;
         this.date = date;
     }
 
     // Constructor for creating new Appointment with specified id
     public Appointment(long id, User user, Client client, Service service,
-                       Tools tools, String info, Date date, String sum, boolean paid, boolean done) {
+                       Tools tools, String info, Date date, String sum, boolean paid, boolean completed) {
         this.id = id;
         this.user = user;
         this.client = client;
@@ -81,7 +81,7 @@ public class Appointment implements Parcelable {
         this.date = date;
         this.sum = sum;
         this.paid = paid;
-        this.done = done;
+        this.completed = completed;
     }
 
     public Appointment(Parcel in) {
@@ -105,7 +105,7 @@ public class Appointment implements Parcelable {
         parcel.writeString(date.toString());
         parcel.writeString(sum);
         parcel.writeInt(paid ? 1 : 0);
-        parcel.writeInt(done ? 1 : 0);
+        parcel.writeInt(completed ? 1 : 0);
     }
 
     private void readFromParcel(Parcel in) {
@@ -119,7 +119,7 @@ public class Appointment implements Parcelable {
         date = new Date(in.readString());
         sum = in.readString();
         paid = in.readInt() == 1;
-        done = in.readInt() == 1;
+        completed = in.readInt() == 1;
     }
 
     public static final Creator CREATOR =
@@ -134,11 +134,11 @@ public class Appointment implements Parcelable {
             };
 
     public boolean isActive() {
-        return !done;
+        return !completed;
     }
 
     public boolean isCompleted() {
-        return done;
+        return completed;
     }
 
     public long getId() {
@@ -213,12 +213,8 @@ public class Appointment implements Parcelable {
         this.paid = paid;
     }
 
-    public boolean isDone() {
-        return done;
-    }
-
-    public void setDone(boolean done) {
-        this.done = done;
+    public void setCompleted(boolean done) {
+        this.completed = completed;
     }
 
     public String getClientContactPhone(){

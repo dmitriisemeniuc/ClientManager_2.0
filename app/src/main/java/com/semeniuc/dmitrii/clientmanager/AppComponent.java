@@ -1,11 +1,14 @@
 package com.semeniuc.dmitrii.clientmanager;
 
 import com.semeniuc.dmitrii.clientmanager.appointments.AppointmentActivity;
+import com.semeniuc.dmitrii.clientmanager.appointments.AppointmentsPresenterImpl;
+import com.semeniuc.dmitrii.clientmanager.data.local.AppointmentsLocalDataSource;
 import com.semeniuc.dmitrii.clientmanager.data.local.DatabaseTaskHelper;
 import com.semeniuc.dmitrii.clientmanager.login.LoginActivity;
 import com.semeniuc.dmitrii.clientmanager.login.LoginInteractorImpl;
 import com.semeniuc.dmitrii.clientmanager.login.LoginPresenterImpl;
 import com.semeniuc.dmitrii.clientmanager.modules.AppModule;
+import com.semeniuc.dmitrii.clientmanager.modules.AppointmentsLocalDataSourceModule;
 import com.semeniuc.dmitrii.clientmanager.modules.AuthenticatorModule;
 import com.semeniuc.dmitrii.clientmanager.modules.DatabaseHelperModule;
 import com.semeniuc.dmitrii.clientmanager.modules.DatabaseTaskHelperModule;
@@ -28,6 +31,7 @@ import dagger.Component;
                 UserModule.class,
                 DatabaseHelperModule.class,
                 DatabaseTaskHelperModule.class,
+                AppointmentsLocalDataSourceModule.class,
                 RepositoryModule.class
         }
 )
@@ -43,6 +47,8 @@ public interface AppComponent {
     void inject(RegistrationPresenterImpl registrationPresenter);
     // Appointment
     void inject(AppointmentActivity appointmentctivity);
+    void inject(AppointmentsPresenterImpl appointmentsPresenter);
     // Data
     void inject(DatabaseTaskHelper dbTaskHelper);
+    void inject(AppointmentsLocalDataSource localDataSource);
 }

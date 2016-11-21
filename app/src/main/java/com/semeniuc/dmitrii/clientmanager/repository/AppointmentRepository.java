@@ -3,21 +3,97 @@ package com.semeniuc.dmitrii.clientmanager.repository;
 import android.support.annotation.NonNull;
 
 import com.semeniuc.dmitrii.clientmanager.data.local.AppointmentsDataSource;
+import com.semeniuc.dmitrii.clientmanager.data.local.AppointmentsLocalDataSource;
+import com.semeniuc.dmitrii.clientmanager.data.local.DatabaseHelper;
 import com.semeniuc.dmitrii.clientmanager.model.Appointment;
+import com.semeniuc.dmitrii.clientmanager.utils.Constants;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class AppointmentRepository implements AppointmentsDataSource{
-    @Override
-    public void getAppointments(@NonNull LoadAppointmentsCallback callback) {
+
+    public static final String LOG_TAG = AppointmentRepository.class.getSimpleName();
+    public static final boolean DEBUG = Constants.DEBUG;
+
+    private DatabaseHelper helper;
+    private AppointmentsLocalDataSource localDataSource;
+
+    /**
+     * This variable has package local visibility so it can be accessed from tests.
+     */
+    Map<Long, Appointment> cachedAppointments;
+
+    /**
+     * Marks the cache as invalid, to force an update the next time data is requested. This variable
+     * has package local visibility so it can be accessed from tests.
+     */
+    boolean cacheIsDirty = false;
+
+    public AppointmentRepository(DatabaseHelper dbHelper, AppointmentsLocalDataSource lDataSource){
+        helper = dbHelper;
+        localDataSource = lDataSource;
+    }
+
+    public void getAppointments(@NonNull AppointmentsDataSource.LoadAppointmentsCallback callback) {
+        checkNotNull(callback);
+
+        // Respond immediately with cache if available and not dirty
+        if (cachedAppointments != null && !cacheIsDirty) {
+            callback.onAppointmentsLoaded(new ArrayList<>(cachedAppointments.values()));
+            return;
+        }
+
+        if (cacheIsDirty) {
+            // If the cache is dirty we need to fetch new data from the network.
+            //getTasksFromRemoteDataSource(callback);
+        } else {
+            // Query the local storage if available. If not, query the network.
+            localDataSource.getAppointments(new LoadAppointmentsCallback() {
+                @Override
+                public void onAppointmentsLoaded(List<Appointment> appointments) {
+                    refreshCache(appointments);
+                    callback.onAppointmentsLoaded(new ArrayList<>(cachedAppointments.values()));
+                }
+
+                @Override
+                public void onDataNotAvailable() {
+                   // getAppointmentsFromRemoteDataSource(callback);
+                }
+            });
+        }
+    }
+
+    private void refreshCache(List<Appointment> appointments) {
+        if (cachedAppointments == null) {
+            cachedAppointments = new LinkedHashMap<>();
+        }
+        cachedAppointments.clear();
+        for (Appointment appointment : appointments) {
+            cachedAppointments.put(appointment.getId(), appointment);
+        }
+        cacheIsDirty = false;
+    }
+
+    public void getAppointment(@NonNull String appointmentId,
+                               @NonNull AppointmentsDataSource.GetAppointmentCallback callback) {
 
     }
 
     @Override
-    public void getAppointment(@NonNull String appointmentId, @NonNull GetAppointmentCallback callback) {
-
-    }
-
-    @Override public void saveAppointment(@NonNull Appointment appointment) {
-
+    public void saveAppointment(@NonNull Appointment appointment, @NonNull SaveAppointmentCallBack callback) {
+        checkNotNull(appointment);
+        boolean saved = localDataSource.saveAppointment(appointment, callback);
+        if(!saved) return;
+        // Do in memory cache update to keep the app UI up to date
+        if (cachedAppointments == null) {
+            cachedAppointments = new LinkedHashMap<>();
+        }
+        cachedAppointments.put(appointment.getId(), appointment);
     }
 
     @Override public void completeAppointment(@NonNull Appointment appointment) {
@@ -41,7 +117,7 @@ public final class AppointmentRepository implements AppointmentsDataSource{
     }
 
     @Override public void refreshAppointments() {
-
+        cacheIsDirty = true;
     }
 
     @Override public void deleteAllAppointments() {
@@ -50,9 +126,6 @@ public final class AppointmentRepository implements AppointmentsDataSource{
 
     @Override public void deleteAppointment(@NonNull String appointmentId) {
 
-    }
-
-    public void getAppointment(LoadAppointmentsCallback loadAppointmentsCallback) {
     }
 
     /*private static final AppointmentRepository instance = new AppointmentRepository();

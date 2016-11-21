@@ -17,16 +17,25 @@
 package com.semeniuc.dmitrii.clientmanager.appointments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.support.annotation.NonNull;
-import android.view.ViewGroup;
+import android.support.v4.app.FragmentActivity;
 
+import com.google.android.gms.auth.api.Auth;
+import com.semeniuc.dmitrii.clientmanager.App;
 import com.semeniuc.dmitrii.clientmanager.addeditappointment.AddEditAppointmentActivity;
 import com.semeniuc.dmitrii.clientmanager.data.local.AppointmentsDataSource;
 import com.semeniuc.dmitrii.clientmanager.model.Appointment;
+import com.semeniuc.dmitrii.clientmanager.model.User;
 import com.semeniuc.dmitrii.clientmanager.repository.AppointmentRepository;
+import com.semeniuc.dmitrii.clientmanager.utils.ActivityUtils;
+import com.semeniuc.dmitrii.clientmanager.utils.Constants;
+import com.semeniuc.dmitrii.clientmanager.utils.GoogleAuthenticator;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -36,18 +45,17 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class AppointmentsPresenterImpl implements AppointmentsPresenter {
 
-    private AppointmentRepository appointmentsRepository;
     private AppointmentsView appointmentsView;
     private AppointmentsFilterType currentFiltering = AppointmentsFilterType.ALL_APPOINTMENTS;
     private boolean firstLoad = true;
 
-    public AppointmentsPresenterImpl(@NonNull AppointmentsView appointmentsView) {
-        this.appointmentsRepository = new AppointmentRepository();
-        this.appointmentsView = checkNotNull(appointmentsView, "appointmentsView cannot be null!");
-        //this.appointmentsRepository = appointmentsRepository;
-        //this.appointmentsView = appointmentsView;
+    @Inject ActivityUtils utils;
+    @Inject AppointmentRepository appointmentRepository;
+    @Inject User user;
 
-        //appointmentsView.setPresenter(this);
+    public AppointmentsPresenterImpl(@NonNull AppointmentsView appointmentsView) {
+        App.getInstance().getComponent().inject(this);
+        this.appointmentsView = checkNotNull(appointmentsView, "appointmentsView cannot be null!");
     }
 
     @Override
@@ -63,7 +71,7 @@ public class AppointmentsPresenterImpl implements AppointmentsPresenter {
     }
 
     @Override public void loadAppointments(boolean forceUpdate) {
-        loadAppointments(forceUpdate || firstLoad, true);
+        loadAppointments(forceUpdate || (firstLoad && Constants.REMOTE_ACCESS_ENABLED), true);
         firstLoad = false;
     }
 
@@ -76,26 +84,15 @@ public class AppointmentsPresenterImpl implements AppointmentsPresenter {
            appointmentsView.setLoadingIndicator(true);
         }
         if (forceUpdate) {
-            appointmentsRepository.refreshAppointments(); // TODO:
+            appointmentRepository.refreshAppointments(); // TODO:
         }
 
-        // The network request might be handled in a different thread so make sure Espresso knows
-        // that the app is busy until the response is handled.
-     //   EspressoIdlingResource.increment(); // App is busy until further notice
-
-        appointmentsRepository.getAppointment(new AppointmentsDataSource.LoadAppointmentsCallback() {
+        appointmentRepository.getAppointments(new AppointmentsDataSource.LoadAppointmentsCallback() {
             @Override
             public void onAppointmentsLoaded(List<Appointment> appointments) {
                 List<Appointment> appointmentsToShow = new ArrayList<>();
 
-                // This callback may be called twice, once for the cache and once for loading
-                // the data from the server API, so we check before decrementing, otherwise
-                // it throws "Counter has been corrupted!" exception.
-              /*  if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
-                    EspressoIdlingResource.decrement(); // Set app as idle.
-                }*/
-
-                // We filter the tasks based on the requestType
+                // We filter the appointments based on the requestType
                 for (Appointment appointment : appointments) {
                     switch (currentFiltering) {
                         case ALL_APPOINTMENTS:
@@ -139,10 +136,10 @@ public class AppointmentsPresenterImpl implements AppointmentsPresenter {
 
     private void processAppointments(List<Appointment> appointments) {
         if (appointments.isEmpty()) {
-            // Show a message indicating there are no tasks for that filter type.
+            // Show a message indicating there are no appointments for that filter type.
             processEmptyAppointments();
         } else {
-            // Show the list of tasks
+            // Show the list of appointments
             appointmentsView.showAppointments(appointments);
             // Set the filter label's text.
             showFilterLabel();
@@ -201,7 +198,7 @@ public class AppointmentsPresenterImpl implements AppointmentsPresenter {
     }
 
     @Override public void clearCompletedAppointments() {
-        appointmentsRepository.clearCompletedAppointments();
+        appointmentRepository.clearCompletedAppointments();
         appointmentsView.showCompletedAppointmentsCleared();
         loadAppointments(false, false);
     }
@@ -214,6 +211,26 @@ public class AppointmentsPresenterImpl implements AppointmentsPresenter {
         return currentFiltering;
     }
 
-    @Override public void hideKeyboard(ViewGroup layout) {
+    @Override
+    public void setGoogleApiClient(GoogleAuthenticator auth, Context context,
+                                   FragmentActivity fragmentActivity) {
+        auth.setGoogleApiClient(context, fragmentActivity);
+    }
+
+    @Override public void logout(GoogleAuthenticator authenticator) {
+        String userType = utils.getUserFromPrefs();
+        if (userType.equals(Constants.GOOGLE_USER)) logoutFromGoogle(authenticator);
+        utils.setUserInPrefs(Constants.NEW_USER, user);
+        appointmentsView.goToLoginActivity();
+        appointmentsView = null;
+    }
+
+    private void logoutFromGoogle(GoogleAuthenticator authenticator){
+        Auth.GoogleSignInApi.signOut(authenticator.getApiClient());
+        //        .setResultCallback(status -> updateUI(false));
+    }
+
+    @Override public void onDestroy() {
+        appointmentsView = null;
     }
 }

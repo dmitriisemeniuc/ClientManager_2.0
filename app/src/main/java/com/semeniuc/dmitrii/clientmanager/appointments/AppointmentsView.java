@@ -42,4 +42,6 @@ public interface AppointmentsView extends BaseView<AppointmentsPresenterImpl> {
     void showLoadingAppointmentsError();
 
     void showCompletedAppointmentsCleared();
+
+    void goToLoginActivity();
 }

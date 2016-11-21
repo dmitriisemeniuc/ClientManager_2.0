@@ -1,9 +1,12 @@
 package com.semeniuc.dmitrii.clientmanager.appointments;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 
 import com.semeniuc.dmitrii.clientmanager.BasePresenter;
 import com.semeniuc.dmitrii.clientmanager.model.Appointment;
+import com.semeniuc.dmitrii.clientmanager.utils.GoogleAuthenticator;
 
 public interface AppointmentsPresenter extends BasePresenter{
 
@@ -25,4 +28,9 @@ public interface AppointmentsPresenter extends BasePresenter{
 
     AppointmentsFilterType getFiltering();
 
+    void setGoogleApiClient(GoogleAuthenticator auth, Context context, FragmentActivity fragmentActivity);
+
+    void logout(GoogleAuthenticator authenticator);
+
+    void onDestroy();
 }

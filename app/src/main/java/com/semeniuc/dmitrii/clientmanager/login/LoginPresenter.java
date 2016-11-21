@@ -2,6 +2,7 @@ package com.semeniuc.dmitrii.clientmanager.login;
 
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
+import android.view.ViewGroup;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.semeniuc.dmitrii.clientmanager.BasePresenter;
@@ -19,6 +20,8 @@ public interface LoginPresenter extends BasePresenter{
     void onLoginWithGoogle(GoogleSignInResult result);
 
     void onLoginWithEmail(String email, String password);
+
+    void hideKeyboard(ViewGroup layout);
 
     void onDestroy();
 

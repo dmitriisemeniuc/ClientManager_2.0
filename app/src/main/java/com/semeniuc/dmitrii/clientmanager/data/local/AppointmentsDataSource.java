@@ -22,11 +22,16 @@ public interface AppointmentsDataSource {
         void onDataNotAvailable();
     }
 
+    interface SaveAppointmentCallBack{
+
+        void onAppoinmentSavingFailed();
+    }
+
     void getAppointments(@NonNull LoadAppointmentsCallback callback);
 
     void getAppointment(@NonNull String appointmentId, @NonNull GetAppointmentCallback callback);
 
-    void saveAppointment(@NonNull Appointment appointment);
+    void saveAppointment(@NonNull Appointment appointment, @NonNull SaveAppointmentCallBack callback);
 
     void completeAppointment(@NonNull Appointment appointment);
 

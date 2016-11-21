@@ -97,7 +97,7 @@ public class ActivityUtils implements Utils.Activity {
         toAppointment.setService(fromAppointment.getService());
         toAppointment.setTools(fromAppointment.getTools());
         toAppointment.setSum(fromAppointment.getSum());
-        toAppointment.setDone(fromAppointment.isDone());
+        toAppointment.setCompleted(fromAppointment.isCompleted());
         toAppointment.setPaid(fromAppointment.isPaid());
         toAppointment.setInfo(fromAppointment.getInfo());
         toAppointment.setDate(fromAppointment.getDate());

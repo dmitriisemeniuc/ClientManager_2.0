@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:tag="cards main container">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        card_view:cardCornerRadius="1dp"
+        card_view:cardElevation="3dp"
+        card_view:cardUseCompatPadding="true"
+        card_view:cardBackgroundColor="@color/whiteTransparent70">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+
+            <RelativeLayout
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/date_time_icon"
+                    style="@style/cardViewItem"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/ic_datetime" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/card_date_time"
+                    style="@style/cardViewItem"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toEndOf="@+id/date_time_icon"
+                    android:layout_toRightOf="@+id/date_time_icon"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="@color/date_text_color"
+                    android:textSize="16sp" />
+
+                <RelativeLayout
+                    android:id="@+id/services"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_alignParentEnd="true">
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/card_services_coloring"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toStartOf="@+id/card_services_hairdo"
+                        android:layout_toLeftOf="@+id/card_services_hairdo"
+                        android:src="@mipmap/ic_paint_yes" />
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/card_services_hairdo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_toStartOf="@+id/card_services_haircut"
+                        android:layout_toLeftOf="@+id/card_services_haircut"
+                        android:src="@mipmap/ic_womans_hair_yes" />
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/card_services_haircut"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:src="@mipmap/ic_scissors_yes" />
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <!-- CLIENT -->
+            <RelativeLayout
+                android:id="@+id/client"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/time"
+                android:layout_marginTop="5dp">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/card_client_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/ic_client" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/card_client_name"
+                    style="@style/cardViewItem"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/card_client_icon"
+                    android:layout_toRightOf="@+id/card_client_icon"
+                    android:layout_toStartOf="@+id/phone"
+                    android:layout_toLeftOf="@+id/phone"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="@color/client_name_text_color"
+                    android:textSize="16sp" />
+
+                <RelativeLayout
+                    android:id="@+id/phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/card_client_phone"
+                        style="@style/cardViewItem"
+                        android:fontFamily="sans-serif-light"
+                        android:textColor="@color/phone_number_text_color"
+                        android:textSize="16sp"
+                        android:textStyle="italic" />
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/card_phone_call_icon"
+                        style="@style/cardViewItem"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toEndOf="@+id/card_client_phone"
+                        android:src="@mipmap/ic_phone_call" />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+            <!-- SERVICE -->
+            <RelativeLayout
+                android:id="@+id/service"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/client"
+                android:layout_marginTop="5dp">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/main_cards_service_icon"
+                    style="@style/cardViewItem"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/ic_service" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/card_service_name"
+                    style="@style/cardViewItem"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toEndOf="@+id/main_cards_service_icon"
+                    android:layout_toRightOf="@+id/main_cards_service_icon"
+                    android:layout_toStartOf="@+id/card_paid_icon"
+                    android:layout_toLeftOf="@+id/card_paid_icon"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="@color/service_text_color"
+                    android:textSize="16sp" />
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/card_paid_icon"
+                    style="@style/cardViewItem"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toStartOf="@+id/card_sum"
+                    android:layout_toLeftOf="@+id/card_sum"
+                    android:src="@mipmap/ic_money_paid_yes" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/card_sum"
+                    style="@style/cardViewItem"
+                    android:layout_marginStart="5dp"
+                    android:layout_toStartOf="@+id/card_sum_currency"
+                    android:layout_toLeftOf="@+id/card_sum_currency"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="@color/money_text"
+                    android:textSize="16sp" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/card_sum_currency"
+                    style="@style/cardViewItem"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@string/currency"
+                    android:textColor="@color/money_text"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+
+            <!-- ADDRESS -->
+            <RelativeLayout
+                android:id="@+id/address"
+                style="@style/cardViewItem"
+                android:layout_below="@+id/service"
+                android:layout_marginTop="5dp">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/card_address_icon"
+                    style="@style/cardViewItem"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/ic_address" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/card_client_address"
+                    style="@style/cardViewItem"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toEndOf="@+id/card_address_icon"
+                    android:layout_toRightOf="@+id/card_address_icon"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="@color/address_text_color"
+                    android:textSize="16sp" />
+
+            </RelativeLayout>
+
+            <!-- INFO -->
+            <RelativeLayout
+                android:id="@+id/info"
+                style="@style/cardViewItem"
+                android:layout_below="@+id/address"
+                android:layout_marginTop="5dp">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/card_info_icon"
+                    style="@style/cardViewItem"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/ic_info" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/card_info"
+                    style="@style/cardViewItem"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toEndOf="@+id/card_info_icon"
+                    android:layout_toRightOf="@+id/card_info_icon"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="@color/info_text_color"
+                    android:textSize="16sp" />
+
+            </RelativeLayout>
+
+            <!-- TOOLS -->
+            <RelativeLayout
+                android:id="@+id/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/info"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:gravity="end">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/card_tools_brush"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_toStartOf="@+id/card_tools_hair_brush"
+                    android:layout_toLeftOf="@+id/card_tools_hair_brush"
+                    android:src="@mipmap/ic_brush_yes" />
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/card_tools_hair_brush"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toStartOf="@+id/card_tools_hair_dryer"
+                    android:layout_toLeftOf="@+id/card_tools_hair_dryer"
+                    android:src="@mipmap/ic_hair_brush_yes" />
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/card_tools_hair_dryer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toStartOf="@+id/card_tools_hair_band"
+                    android:layout_toLeftOf="@+id/card_tools_hair_band"
+                    android:src="@mipmap/ic_hair_dryer_yes" />
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/card_tools_hair_band"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toStartOf="@+id/card_tools_cut_set"
+                    android:layout_toLeftOf="@+id/card_tools_cut_set"
+                    android:src="@mipmap/ic_hair_band_yes" />
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/card_tools_cut_set"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toStartOf="@+id/card_tools_spray"
+                    android:layout_toLeftOf="@+id/card_tools_spray"
+                    android:src="@mipmap/ic_cutset_yes" />
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/card_tools_spray"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toStartOf="@+id/card_tools_oxy"
+                    android:layout_toLeftOf="@+id/card_tools_oxy"
+                    android:src="@mipmap/ic_spray_yes" />
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/card_tools_oxy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toStartOf="@+id/card_tools_tube"
+                    android:layout_toLeftOf="@+id/card_tools_tube"
+                    android:src="@mipmap/ic_soap_yes" />
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/card_tools_tube"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toStartOf="@+id/card_tools_trimmer"
+                    android:layout_toLeftOf="@+id/card_tools_trimmer"
+                    android:src="@mipmap/ic_tube_yes" />
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/card_tools_trimmer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:src="@mipmap/ic_trimmer_yes" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
+
+

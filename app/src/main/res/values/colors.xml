@@ -33,6 +33,13 @@
     <color name="lightGreen">#DCEDC8</color>
     <color name="lightYellow">#FFF9C4</color>
     <color name="white">#fff</color>
+    <color name="date_text_color">#2c3e50</color>
+    <color name="client_name_text_color">#d35400</color>
+    <color name="phone_number_text_color">#27ae60</color>
+    <color name="service_text_color">#c0392b</color>
+    <color name="money_text">#34495e</color>
+    <color name="address_text_color">#34495e</color>
+    <color name="info_text_color">#666666</color>
     <drawable name="touchFeedback">#CFD8DC</drawable>
     <drawable name="completedTaskBackground">#CCCCCC</drawable>
 </resources>

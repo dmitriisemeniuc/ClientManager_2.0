@@ -20,29 +20,32 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.CheckBox;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.semeniuc.dmitrii.clientmanager.R;
+import com.semeniuc.dmitrii.clientmanager.adapter.AppointmentAdapter;
+import com.semeniuc.dmitrii.clientmanager.addeditappointment.AddEditAppointmentActivity;
+import com.semeniuc.dmitrii.clientmanager.login.LoginActivity;
 import com.semeniuc.dmitrii.clientmanager.model.Appointment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -69,6 +72,8 @@ public class AppointmentsFragment extends Fragment implements AppointmentsView {
 
     private TextView filteringLabelView;
 
+    private View root;
+
     public AppointmentsFragment() {
         // Requires empty public constructor
     }
@@ -80,13 +85,13 @@ public class AppointmentsFragment extends Fragment implements AppointmentsView {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        listAdapter = new AppointmentAdapter(new ArrayList<>(0), itemListener);
+        //listAdapter = new AppointmentAdapter(new ArrayList<>(0), itemListener);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if(presenter != null) presenter.start();
+        if (presenter != null) presenter.start();
     }
 
     @Override
@@ -96,18 +101,18 @@ public class AppointmentsFragment extends Fragment implements AppointmentsView {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(presenter != null) presenter.result(requestCode, resultCode);
+        if (presenter != null) presenter.result(requestCode, resultCode);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_appointments, container, false);
+        root = inflater.inflate(R.layout.fragment_appointments, container, false);
 
-        // Set up tasks view
-        ListView listView = (ListView) root.findViewById(R.id.appointments_list);
-        listView.setAdapter(listAdapter);
+        // Set up appointments view
+        /*ListView listView = (ListView) root.findViewById(R.id.appointments_list);
+        listView.setAdapter(listAdapter);*/
         filteringLabelView = (TextView) root.findViewById(R.id.filteringLabel);
         appointmentsView = (LinearLayout) root.findViewById(R.id.appointmentsLL);
 
@@ -128,15 +133,12 @@ public class AppointmentsFragment extends Fragment implements AppointmentsView {
                 (FloatingActionButton) getActivity().findViewById(R.id.fab_add_appointment);
 
         fab.setImageResource(R.mipmap.ic_plus);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(presenter != null) presenter.addNewAppointment();
-            }
+        fab.setOnClickListener(v -> {
+            if (presenter != null) presenter.addNewAppointment();
         });
 
         // Set up progress indicator
-        final ScrollChildSwipeRefreshLayout swipeRefreshLayout =
+        /*final ScrollChildSwipeRefreshLayout swipeRefreshLayout =
                 (ScrollChildSwipeRefreshLayout) root.findViewById(R.id.refresh_layout);
         swipeRefreshLayout.setColorSchemeColors(
                 ContextCompat.getColor(getActivity(), R.color.colorPrimary),
@@ -146,12 +148,7 @@ public class AppointmentsFragment extends Fragment implements AppointmentsView {
         // Set the scrolling view in the custom SwipeRefreshLayout.
         swipeRefreshLayout.setScrollUpChild(listView);
 
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                presenter.loadAppointments(false);
-            }
-        });
+        swipeRefreshLayout.setOnRefreshListener(() -> presenter.loadAppointments(false));*/
 
         setHasOptionsMenu(true);
 
@@ -184,22 +181,20 @@ public class AppointmentsFragment extends Fragment implements AppointmentsView {
         PopupMenu popup = new PopupMenu(getContext(), getActivity().findViewById(R.id.menu_filter));
         popup.getMenuInflater().inflate(R.menu.filter_appointments, popup.getMenu());
 
-        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.active:
-                        presenter.setFiltering(AppointmentsFilterType.ACTIVE_APPOINTMENTS);
-                        break;
-                    case R.id.completed:
-                        presenter.setFiltering(AppointmentsFilterType.COMPLETED_APPOINTMENTS);
-                        break;
-                    default:
-                        presenter.setFiltering(AppointmentsFilterType.ALL_APPOINTMENTS);
-                        break;
-                }
-                presenter.loadAppointments(false);
-                return true;
+        popup.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.active:
+                    presenter.setFiltering(AppointmentsFilterType.ACTIVE_APPOINTMENTS);
+                    break;
+                case R.id.completed:
+                    presenter.setFiltering(AppointmentsFilterType.COMPLETED_APPOINTMENTS);
+                    break;
+                default:
+                    presenter.setFiltering(AppointmentsFilterType.ALL_APPOINTMENTS);
+                    break;
             }
+            presenter.loadAppointments(false);
+            return true;
         });
 
         popup.show();
@@ -208,22 +203,22 @@ public class AppointmentsFragment extends Fragment implements AppointmentsView {
     /**
      * Listener for clicks on appointments in the ListView.
      */
-    AppointmentItemListener itemListener = new AppointmentItemListener() {
+    /*AppointmentItemListener itemListener = new AppointmentItemListener() {
         @Override
         public void onAppointmentClick(Appointment clickedAppointment) {
-            if(presenter != null) presenter.openAppointmentDetails(clickedAppointment);
+            if (presenter != null) presenter.openAppointmentDetails(clickedAppointment);
         }
 
         @Override
         public void onCompleteAppointmentClick(Appointment completedAppointment) {
-            if(presenter != null) presenter.completeAppointment(completedAppointment);
+            if (presenter != null) presenter.completeAppointment(completedAppointment);
         }
 
         @Override
         public void onActivateAppointmentClick(Appointment activatedAppointment) {
-            if(presenter != null) presenter.activateAppointment(activatedAppointment);
+            if (presenter != null) presenter.activateAppointment(activatedAppointment);
         }
-    };
+    };*/
 
     @Override
     public void setLoadingIndicator(final boolean active) {
@@ -235,12 +230,7 @@ public class AppointmentsFragment extends Fragment implements AppointmentsView {
                 (SwipeRefreshLayout) getView().findViewById(R.id.refresh_layout);
 
         // Make sure setRefreshing() is called after the layout is done with everything else.
-        srl.post(new Runnable() {
-            @Override
-            public void run() {
-                srl.setRefreshing(active);
-            }
-        });
+        srl.post(() -> srl.setRefreshing(active));
     }
 
     private void showNoAppointmentsViews(String mainText, int iconRes, boolean showAddView) {
@@ -253,15 +243,50 @@ public class AppointmentsFragment extends Fragment implements AppointmentsView {
     }
 
     @Override public void showAppointments(List<Appointment> appointments) {
-        listAdapter.replaceData(appointments);
+        //listAdapter.replaceData(appointments);
+        getRecyclerView().setAdapter(new AppointmentAdapter(appointments,
+                appointment -> reviewAppointment(appointment),
+                phoneNumber -> callToNumber(phoneNumber)));
 
         appointmentsView.setVisibility(View.VISIBLE);
         noAppointmentsView.setVisibility(View.GONE);
     }
 
+    private void reviewAppointment(Appointment appointment) {
+    }
+
+    private void callToNumber(String phoneNumber) {
+    }
+
+    /**
+     * Get Recycler View with itemAnimation and LayoutManager setting
+     */
+    private RecyclerView getRecyclerView() {
+        RecyclerView recyclerView = (RecyclerView) getActivity().findViewById(R.id.appointments_list);
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                FloatingActionButton button = (FloatingActionButton) getActivity().findViewById(R.id.fab_add_appointment);
+                if (dy > 0) {
+                    CoordinatorLayout.LayoutParams layoutParams =
+                            (CoordinatorLayout.LayoutParams) button.getLayoutParams();
+                    int fab_bottomMargin = layoutParams.bottomMargin;
+                    button.animate().translationY(button.getHeight() +
+                            fab_bottomMargin).setInterpolator(new LinearInterpolator()).start();
+                } else if (dy < 0)
+                    button.animate().translationY(0).setInterpolator(new LinearInterpolator()).start();
+            }
+        });
+        return recyclerView;
+    }
+
     @Override public void showAddAppointment() {
-        /*Intent intent = new Intent(getContext(), AddEditTaskActivity.class);
-        startActivityForResult(intent, AddEditTaskActivity.REQUEST_ADD_TASK);*/
+        Intent intent = new Intent(getContext(), AddEditAppointmentActivity.class);
+        startActivityForResult(intent, AddEditAppointmentActivity.REQUEST_ADD_APPOINTMENT);
     }
 
     @Override public void showAppointmentDetailsUi(String appointmentId) {
@@ -290,6 +315,10 @@ public class AppointmentsFragment extends Fragment implements AppointmentsView {
 
     @Override public void showCompletedAppointmentsCleared() {
 
+    }
+
+    @Override public void goToLoginActivity() {
+        startActivity(new Intent(getContext(), LoginActivity.class));
     }
 
     @Override public void showNoAppointments() {
@@ -345,7 +374,7 @@ public class AppointmentsFragment extends Fragment implements AppointmentsView {
         return isAdded();
     }
 
-    private static class AppointmentAdapter extends BaseAdapter {
+/*    private static class AppointmentAdapter extends BaseAdapter {
 
         private List<Appointment> appointments;
         private AppointmentItemListener itemListener;
@@ -416,7 +445,7 @@ public class AppointmentsFragment extends Fragment implements AppointmentsView {
 
             return rowView;
         }
-    }
+    }*/
 
     public interface AppointmentItemListener {
 
@@ -427,4 +456,8 @@ public class AppointmentsFragment extends Fragment implements AppointmentsView {
         void onActivateAppointmentClick(Appointment activatedAppointment);
     }
 
+    @Override public void onDestroyView() {
+        super.onDestroyView();
+        presenter = null;
+    }
 }
