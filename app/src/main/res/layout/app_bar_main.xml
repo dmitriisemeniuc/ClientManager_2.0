@@ -10,14 +10,13 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        android:background="@color/whiteTransparent70">
+        android:theme="@style/AppTheme">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="?attr/colorPrimaryDark"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
@@ -42,6 +41,8 @@
             android:src="@mipmap/ic_plus"
             app:fabSize="normal"
             app:layout_anchor="@id/contentFrame"
-            app:layout_anchorGravity="bottom|right|end"/>
+            app:layout_anchorGravity="bottom|right|end"
+            app:backgroundTint="?attr/colorPrimaryDark"
+            app:elevation="6dp"/>
     </android.support.design.widget.CoordinatorLayout>
 </android.support.design.widget.CoordinatorLayout>

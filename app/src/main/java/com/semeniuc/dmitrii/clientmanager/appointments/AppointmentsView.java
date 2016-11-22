@@ -44,4 +44,7 @@ public interface AppointmentsView extends BaseView<AppointmentsPresenterImpl> {
     void showCompletedAppointmentsCleared();
 
     void goToLoginActivity();
+
+    void makeCallToNumber(String phoneNumber);
+
 }

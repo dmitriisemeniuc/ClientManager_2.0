@@ -17,6 +17,7 @@
 package com.semeniuc.dmitrii.clientmanager.appointments;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,6 +25,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -137,19 +139,6 @@ public class AppointmentsFragment extends Fragment implements AppointmentsView {
             if (presenter != null) presenter.addNewAppointment();
         });
 
-        // Set up progress indicator
-        /*final ScrollChildSwipeRefreshLayout swipeRefreshLayout =
-                (ScrollChildSwipeRefreshLayout) root.findViewById(R.id.refresh_layout);
-        swipeRefreshLayout.setColorSchemeColors(
-                ContextCompat.getColor(getActivity(), R.color.colorPrimary),
-                ContextCompat.getColor(getActivity(), R.color.colorAccent),
-                ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark)
-        );
-        // Set the scrolling view in the custom SwipeRefreshLayout.
-        swipeRefreshLayout.setScrollUpChild(listView);
-
-        swipeRefreshLayout.setOnRefreshListener(() -> presenter.loadAppointments(false));*/
-
         setHasOptionsMenu(true);
 
         return root;
@@ -219,7 +208,6 @@ public class AppointmentsFragment extends Fragment implements AppointmentsView {
             if (presenter != null) presenter.activateAppointment(activatedAppointment);
         }
     };*/
-
     @Override
     public void setLoadingIndicator(final boolean active) {
 
@@ -244,9 +232,23 @@ public class AppointmentsFragment extends Fragment implements AppointmentsView {
 
     @Override public void showAppointments(List<Appointment> appointments) {
         //listAdapter.replaceData(appointments);
-        getRecyclerView().setAdapter(new AppointmentAdapter(appointments,
+        RecyclerView recyclerView = getRecyclerView();
+        recyclerView.setAdapter(new AppointmentAdapter(appointments,
                 appointment -> reviewAppointment(appointment),
                 phoneNumber -> callToNumber(phoneNumber)));
+
+        // Set up progress indicator
+        final ScrollChildSwipeRefreshLayout swipeRefreshLayout =
+                (ScrollChildSwipeRefreshLayout) getActivity().findViewById(R.id.refresh_layout);
+        swipeRefreshLayout.setColorSchemeColors(
+                ContextCompat.getColor(getActivity(), R.color.colorPrimary),
+                ContextCompat.getColor(getActivity(), R.color.colorAccent),
+                ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark)
+        );
+        // Set the scrolling view in the custom SwipeRefreshLayout.
+        swipeRefreshLayout.setScrollUpChild(recyclerView);
+
+        swipeRefreshLayout.setOnRefreshListener(() -> presenter.loadAppointments(false));
 
         appointmentsView.setVisibility(View.VISIBLE);
         noAppointmentsView.setVisibility(View.GONE);
@@ -256,6 +258,8 @@ public class AppointmentsFragment extends Fragment implements AppointmentsView {
     }
 
     private void callToNumber(String phoneNumber) {
+        AppointmentActivity.phoneNumber = phoneNumber;
+        presenter.requestCallPhonePermission(phoneNumber, getContext(), getActivity());
     }
 
     /**
@@ -319,6 +323,11 @@ public class AppointmentsFragment extends Fragment implements AppointmentsView {
 
     @Override public void goToLoginActivity() {
         startActivity(new Intent(getContext(), LoginActivity.class));
+    }
+
+    @Override public void makeCallToNumber(String phoneNumber) {
+        Intent intent = new Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null));
+        startActivity(intent);
     }
 
     @Override public void showNoAppointments() {

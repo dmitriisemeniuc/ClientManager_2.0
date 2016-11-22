@@ -1,14 +1,15 @@
 package com.semeniuc.dmitrii.clientmanager.appointments;
 
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.semeniuc.dmitrii.clientmanager.App;
 import com.semeniuc.dmitrii.clientmanager.BaseActivity;
@@ -16,6 +17,7 @@ import com.semeniuc.dmitrii.clientmanager.R;
 import com.semeniuc.dmitrii.clientmanager.login.LoginInteractor;
 import com.semeniuc.dmitrii.clientmanager.model.User;
 import com.semeniuc.dmitrii.clientmanager.utils.ActivityUtils;
+import com.semeniuc.dmitrii.clientmanager.utils.Constants;
 import com.semeniuc.dmitrii.clientmanager.utils.GoogleAuthenticator;
 
 import javax.inject.Inject;
@@ -25,6 +27,7 @@ public class AppointmentActivity extends BaseActivity implements LoginInteractor
     private static final String CURRENT_FILTERING_KEY = "CURRENT_FILTERING_KEY";
     private DrawerLayout drawerLayout;
     private AppointmentsPresenterImpl presenter;
+    public static String phoneNumber;
 
     @Inject ActivityUtils utils;
     @Inject User user;
@@ -55,8 +58,8 @@ public class AppointmentActivity extends BaseActivity implements LoginInteractor
         ActionBar ab = getSupportActionBar();
         assert ab != null;
         ab.setHomeAsUpIndicator(R.mipmap.ic_menu);
-        ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#B3FFFFFF"));
-        ab.setBackgroundDrawable(colorDrawable);
+       /* ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#B3FFFFFF"));
+        ab.setBackgroundDrawable(colorDrawable);*/
         ab.setDisplayHomeAsUpEnabled(true);
     }
 
@@ -117,6 +120,23 @@ public class AppointmentActivity extends BaseActivity implements LoginInteractor
                     drawerLayout.closeDrawers();
                     return true;
                 });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case Constants.PERMISSIONS_REQUEST_CALL_PHONE: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    presenter.requestCallPhonePermission(phoneNumber, this, this);
+                } else {
+                    Toast.makeText(this,
+                            getResources().getString(R.string.grant_call_permission),
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        }
     }
 
     public void onLogout() {

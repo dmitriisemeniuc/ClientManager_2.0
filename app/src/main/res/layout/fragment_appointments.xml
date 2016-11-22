@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/refresh_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_marginTop="?android:attr/actionBarSize">
 
     <RelativeLayout
         android:id="@+id/appointmentsContainer"
@@ -13,29 +14,34 @@
         android:orientation="vertical"
         android:background="@drawable/main_background">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/appointments_list"
-            android:layout_marginTop="?attr/actionBarSize"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="vertical" />
-
         <LinearLayout
             android:id="@+id/appointmentsLL"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginTop="5dp">
+            <RelativeLayout
+                android:id="@+id/appointments_statistics"
+                android:layout_width="match_parent"
+                android:layout_height="?android:attr/actionBarSize"
+                android:background="@color/whiteTransparent95"
+                android:gravity="center_vertical">
+                <TextView
+                    android:id="@+id/filteringLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="16sp"
+                    android:text="All Appointments"/>
+            </RelativeLayout>
 
-            <TextView
-                android:id="@+id/filteringLabel"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/appointments_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:layout_marginLeft="@dimen/list_item_padding"
-                android:layout_marginRight="@dimen/list_item_padding"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:gravity="center_vertical"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+                android:scrollbars="vertical" />
 
         </LinearLayout>
 

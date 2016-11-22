@@ -1,5 +1,6 @@
 package com.semeniuc.dmitrii.clientmanager.appointments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
@@ -33,4 +34,6 @@ public interface AppointmentsPresenter extends BasePresenter{
     void logout(GoogleAuthenticator authenticator);
 
     void onDestroy();
+
+    void requestCallPhonePermission(String phoneNumber, Context context, Activity activity);
 }

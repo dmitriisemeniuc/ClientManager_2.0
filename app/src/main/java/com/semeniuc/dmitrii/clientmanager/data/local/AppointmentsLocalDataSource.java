@@ -8,6 +8,7 @@ import com.j256.ormlite.stmt.Where;
 import com.semeniuc.dmitrii.clientmanager.App;
 import com.semeniuc.dmitrii.clientmanager.model.Appointment;
 import com.semeniuc.dmitrii.clientmanager.model.Client;
+import com.semeniuc.dmitrii.clientmanager.model.Contact;
 import com.semeniuc.dmitrii.clientmanager.model.Service;
 import com.semeniuc.dmitrii.clientmanager.model.Tools;
 import com.semeniuc.dmitrii.clientmanager.model.User;
@@ -52,6 +53,10 @@ public class AppointmentsLocalDataSource {
         for (int i = 1; i < 50; i++) {
             Client client = new Client(user);
             client.setName("Client " + i);
+            Contact contact = new Contact();
+            contact.setAddress("Address" + i);
+            contact.setPhone("123456789" + i);
+            client.setContact(contact);
             Service service = new Service();
             service.setName("Service " + i);
             Tools tools = new Tools();

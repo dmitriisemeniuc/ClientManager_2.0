@@ -16,10 +16,14 @@
 
 package com.semeniuc.dmitrii.clientmanager.appointments;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 
 import com.google.android.gms.auth.api.Auth;
 import com.semeniuc.dmitrii.clientmanager.App;
@@ -134,7 +138,7 @@ public class AppointmentsPresenterImpl implements AppointmentsPresenter {
         });
     }
 
-    private void processAppointments(List<Appointment> appointments) {
+    private void processAppointments(@NonNull List<Appointment> appointments) {
         if (appointments.isEmpty()) {
             // Show a message indicating there are no appointments for that filter type.
             processEmptyAppointments();
@@ -232,5 +236,16 @@ public class AppointmentsPresenterImpl implements AppointmentsPresenter {
 
     @Override public void onDestroy() {
         appointmentsView = null;
+    }
+
+    @Override public void requestCallPhonePermission(String phoneNumber, Context context, Activity activity) {
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE)
+                != PackageManager.PERMISSION_GRANTED) {
+            // The callback method gets the result of the request.
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CALL_PHONE},
+                    Constants.PERMISSIONS_REQUEST_CALL_PHONE);
+            return;
+        }
+        appointmentsView.makeCallToNumber(phoneNumber);
     }
 }
