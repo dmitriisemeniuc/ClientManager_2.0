@@ -26,7 +26,7 @@ public class AppointmentActivity extends BaseActivity implements LoginInteractor
 
     private static final String CURRENT_FILTERING_KEY = "CURRENT_FILTERING_KEY";
     private DrawerLayout drawerLayout;
-    private AppointmentsPresenterImpl presenter;
+    private AppointmentsPresenter presenter;
     public static String phoneNumber;
 
     @Inject ActivityUtils utils;
@@ -41,7 +41,7 @@ public class AppointmentActivity extends BaseActivity implements LoginInteractor
         initToolbar();
         initNavigationView();
         AppointmentsFragment fragment = addFragment();
-        presenter = new AppointmentsPresenterImpl(fragment);
+        presenter = new AppointmentsPresenter(fragment);
         fragment.setPresenter(presenter);
         presenter.setGoogleApiClient(authenticator, this, this);
         // Load previously saved state, if available.
@@ -58,8 +58,6 @@ public class AppointmentActivity extends BaseActivity implements LoginInteractor
         ActionBar ab = getSupportActionBar();
         assert ab != null;
         ab.setHomeAsUpIndicator(R.mipmap.ic_menu);
-       /* ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#B3FFFFFF"));
-        ab.setBackgroundDrawable(colorDrawable);*/
         ab.setDisplayHomeAsUpEnabled(true);
     }
 

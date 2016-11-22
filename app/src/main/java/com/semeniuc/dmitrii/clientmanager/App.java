@@ -6,7 +6,7 @@ import com.semeniuc.dmitrii.clientmanager.modules.AppModule;
 import com.semeniuc.dmitrii.clientmanager.modules.AppointmentsLocalDataSourceModule;
 import com.semeniuc.dmitrii.clientmanager.modules.AuthenticatorModule;
 import com.semeniuc.dmitrii.clientmanager.modules.DatabaseHelperModule;
-import com.semeniuc.dmitrii.clientmanager.modules.DatabaseTaskHelperModule;
+import com.semeniuc.dmitrii.clientmanager.modules.DatabaseManagerModule;
 import com.semeniuc.dmitrii.clientmanager.modules.RepositoryModule;
 import com.semeniuc.dmitrii.clientmanager.modules.UserModule;
 import com.semeniuc.dmitrii.clientmanager.modules.UtilsModule;
@@ -33,7 +33,7 @@ public class App extends Application {
                 .authenticatorModule(new AuthenticatorModule())
                 .userModule(new UserModule())
                 .databaseHelperModule(new DatabaseHelperModule())
-                .databaseTaskHelperModule(new DatabaseTaskHelperModule())
+                .databaseManagerModule(new DatabaseManagerModule())
                 .appointmentsLocalDataSourceModule(new AppointmentsLocalDataSourceModule())
                 .repositoryModule(new RepositoryModule())
                 .build();

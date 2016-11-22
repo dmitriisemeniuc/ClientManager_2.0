@@ -57,15 +57,15 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         holder.dateTime.setText(utils.convertDateToString(appointments.get(position).getDate(),
                 Constants.DATE_TIME_FORMAT, App.getInstance().getApplicationContext()));
         if (appointments.get(position).isPaid()) {
-           /* holder.cardView.setCardBackgroundColor(ContextCompat.getColor(
-                    App.getInstance().getApplicationContext(), R.color.light_yellow));*/
+            holder.cardView.setCardBackgroundColor(ContextCompat.getColor(
+                    App.getInstance().getApplicationContext(), R.color.light_yellow));
             holder.paid.setImageDrawable(ContextCompat.getDrawable(
                     App.getInstance().getApplicationContext(), R.mipmap.ic_money_paid_yes));
         }
         if (appointments.get(position).isCompleted() ||
                 (appointments.get(position).isPaid() && appointments.get(position).isCompleted())) {
-           /* holder.cardView.setCardBackgroundColor(ContextCompat.getColor(
-                    App.getInstance().getApplicationContext(), R.color.light_green));*/
+            holder.cardView.setCardBackgroundColor(ContextCompat.getColor(
+                    App.getInstance().getApplicationContext(), R.color.light_green));
         }
         if (appointments.get(position).getClientContactAddress().isEmpty())
             holder.addressLayout.setVisibility(View.GONE);

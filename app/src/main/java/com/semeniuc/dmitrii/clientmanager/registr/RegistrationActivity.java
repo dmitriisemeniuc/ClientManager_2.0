@@ -21,7 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class RegistrationActivity extends BaseActivity implements RegistrationView {
+public class RegistrationActivity extends BaseActivity implements RegistrationContract.View {
 
     private RegistrationPresenter presenter;
     private ProgressDialog progressDialog;
@@ -46,7 +46,7 @@ public class RegistrationActivity extends BaseActivity implements RegistrationVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         ButterKnife.bind(this); // Butterknife
-        setPresenter(new RegistrationPresenterImpl(this));
+        setPresenter(new RegistrationPresenter(this));
     }
 
     @Override public void setPresenter(RegistrationPresenter presenter) {

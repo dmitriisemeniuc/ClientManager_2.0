@@ -56,11 +56,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Display a grid of {@link com.semeniuc.dmitrii.clientmanager.model.Appointment}s.
  * User can choose to view all, active or close appointments.
  */
-public class AppointmentsFragment extends Fragment implements AppointmentsView {
+public class AppointmentsFragment extends Fragment implements AppointmentsContract.View {
 
-    private AppointmentsPresenter presenter;
-
-    private AppointmentAdapter listAdapter;
+    private AppointmentsContract.Presenter presenter;
 
     private View noAppointmentsView;
 
@@ -87,7 +85,6 @@ public class AppointmentsFragment extends Fragment implements AppointmentsView {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //listAdapter = new AppointmentAdapter(new ArrayList<>(0), itemListener);
     }
 
     @Override
@@ -97,7 +94,7 @@ public class AppointmentsFragment extends Fragment implements AppointmentsView {
     }
 
     @Override
-    public void setPresenter(@NonNull AppointmentsPresenterImpl presenter) {
+    public void setPresenter(@NonNull AppointmentsPresenter presenter) {
         this.presenter = checkNotNull(presenter);
     }
 
@@ -113,8 +110,6 @@ public class AppointmentsFragment extends Fragment implements AppointmentsView {
         root = inflater.inflate(R.layout.fragment_appointments, container, false);
 
         // Set up appointments view
-        /*ListView listView = (ListView) root.findViewById(R.id.appointments_list);
-        listView.setAdapter(listAdapter);*/
         filteringLabelView = (TextView) root.findViewById(R.id.filteringLabel);
         appointmentsView = (LinearLayout) root.findViewById(R.id.appointmentsLL);
 
@@ -123,12 +118,7 @@ public class AppointmentsFragment extends Fragment implements AppointmentsView {
         noAppointmentIcon = (ImageView) root.findViewById(R.id.noAppointmentsIcon);
         noAppointmentMainView = (TextView) root.findViewById(R.id.noAppointmentsMain);
         noAppointmentAddView = (TextView) root.findViewById(R.id.noAppointmentsAdd);
-        noAppointmentAddView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAddAppointment();
-            }
-        });
+        noAppointmentAddView.setOnClickListener(v -> showAddAppointment());
 
         // Set up floating action button
         FloatingActionButton fab =
@@ -237,6 +227,13 @@ public class AppointmentsFragment extends Fragment implements AppointmentsView {
                 appointment -> reviewAppointment(appointment),
                 phoneNumber -> callToNumber(phoneNumber)));
 
+        setSwipeRefresh(recyclerView);
+
+        appointmentsView.setVisibility(View.VISIBLE);
+        noAppointmentsView.setVisibility(View.GONE);
+    }
+
+    private void setSwipeRefresh(RecyclerView recyclerView) {
         // Set up progress indicator
         final ScrollChildSwipeRefreshLayout swipeRefreshLayout =
                 (ScrollChildSwipeRefreshLayout) getActivity().findViewById(R.id.refresh_layout);
@@ -249,9 +246,6 @@ public class AppointmentsFragment extends Fragment implements AppointmentsView {
         swipeRefreshLayout.setScrollUpChild(recyclerView);
 
         swipeRefreshLayout.setOnRefreshListener(() -> presenter.loadAppointments(false));
-
-        appointmentsView.setVisibility(View.VISIBLE);
-        noAppointmentsView.setVisibility(View.GONE);
     }
 
     private void reviewAppointment(Appointment appointment) {
@@ -375,7 +369,9 @@ public class AppointmentsFragment extends Fragment implements AppointmentsView {
     }
 
     private void showMessage(String message) {
-        Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).show();
+        View view = getView();
+        checkNotNull(view);
+        Snackbar.make(view, message, Snackbar.LENGTH_LONG).show();
     }
 
     @Override

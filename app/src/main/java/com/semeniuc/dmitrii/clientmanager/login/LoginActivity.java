@@ -24,7 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginActivity extends BaseActivity implements LoginView {
+public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     private LoginPresenter presenter;
     private ProgressDialog progressDialog;
@@ -51,7 +51,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        setPresenter(new LoginPresenterImpl(this));
+        setPresenter(new LoginPresenter(this));
         presenter.verifyUserType(this, this);
     }
 

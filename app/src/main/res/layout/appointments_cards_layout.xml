@@ -13,7 +13,7 @@
         card_view:cardCornerRadius="1dp"
         card_view:cardElevation="3dp"
         card_view:cardUseCompatPadding="true"
-        card_view:cardBackgroundColor="@color/whiteTransparent95">
+        card_view:cardBackgroundColor="@android:color/white">
 
         <RelativeLayout
             android:layout_width="match_parent"
