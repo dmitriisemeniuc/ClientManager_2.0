@@ -20,7 +20,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class AppointmentsLocalDataSource {
+public class AppointmentsLocalDataSource implements AppointmentsDataSource{
 
     @Inject User user;
     @Inject DatabaseHelper dbHelper;
@@ -46,6 +46,21 @@ public class AppointmentsLocalDataSource {
             }
         }
         callback.onAppointmentsLoaded(appointments);
+    }
+
+    @Override
+    public void getAppointment(@NonNull Integer appointmentId, @NonNull GetAppointmentCallback callback) {
+        Appointment appointment = null;
+        try {
+            appointment = dbHelper.getAppointmentDao().queryForId(appointmentId);
+            if (appointment != null){
+                callback.onAppointmentLoaded(appointment);
+                return;
+            }
+            callback.onDataNotAvailable();
+        } catch (java.sql.SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private List<Appointment> getFakeData() {
@@ -85,18 +100,47 @@ public class AppointmentsLocalDataSource {
     }
 
 
-    public boolean saveAppointment(@NonNull Appointment appointment,
+    public void saveAppointment(@NonNull Appointment appointment,
                                    @NonNull AppointmentsDataSource.SaveAppointmentCallBack callBack) {
         try {
             int index = dbHelper.getAppointmentDao().create(appointment);
-            if (index != 1) {
-                callBack.onAppoinmentSavingFailed();
-                return false;
-            }
+            if(index == 1) callBack.onAppointmentSaved();
+            else callBack.onAppointmentSavingFailed();
         } catch (java.sql.SQLException e) {
-            callBack.onAppoinmentSavingFailed();
+            callBack.onAppointmentSavingFailed();
             e.printStackTrace();
         }
-        return true;
+    }
+
+    @Override public void completeAppointment(@NonNull Appointment appointment) {
+
+    }
+
+    @Override public void completeAppointment(@NonNull String appointmentId) {
+
+    }
+
+    @Override public void activateAppointment(@NonNull Appointment appointment) {
+
+    }
+
+    @Override public void activateAppointment(@NonNull String appointmentId) {
+
+    }
+
+    @Override public void clearCompletedAppointments() {
+
+    }
+
+    @Override public void refreshAppointments() {
+
+    }
+
+    @Override public void deleteAllAppointments() {
+
+    }
+
+    @Override public void deleteAppointment(@NonNull String appointmentId) {
+
     }
 }

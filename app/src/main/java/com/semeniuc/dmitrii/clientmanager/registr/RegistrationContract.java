@@ -7,7 +7,7 @@ import com.semeniuc.dmitrii.clientmanager.BaseView;
 
 public interface RegistrationContract {
 
-    interface View extends BaseView<RegistrationPresenter> {
+    interface View extends BaseView<Presenter> {
 
         void showEmailRegisteredErrorMessage();
 

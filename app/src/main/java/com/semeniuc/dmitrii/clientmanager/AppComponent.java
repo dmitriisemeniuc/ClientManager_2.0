@@ -1,5 +1,7 @@
 package com.semeniuc.dmitrii.clientmanager;
 
+import com.semeniuc.dmitrii.clientmanager.addeditappointment.AddEditAppointmentFragment;
+import com.semeniuc.dmitrii.clientmanager.addeditappointment.AddEditAppointmentPresenter;
 import com.semeniuc.dmitrii.clientmanager.appointments.AppointmentActivity;
 import com.semeniuc.dmitrii.clientmanager.appointments.AppointmentsPresenter;
 import com.semeniuc.dmitrii.clientmanager.data.local.AppointmentsLocalDataSource;
@@ -48,6 +50,9 @@ public interface AppComponent {
     // Appointment
     void inject(AppointmentActivity appointmentctivity);
     void inject(AppointmentsPresenter appointmentsPresenter);
+    // AddEditAppointment
+    void inject(AddEditAppointmentPresenter addEditAppointmentPresenter);
+    void inject(AddEditAppointmentFragment addEditAppointmentFragment);
     // Data
     void inject(DatabaseManager dbManager);
     void inject(AppointmentsLocalDataSource localDataSource);

@@ -19,7 +19,6 @@ package com.semeniuc.dmitrii.clientmanager.appointments;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -47,6 +46,7 @@ import com.semeniuc.dmitrii.clientmanager.adapter.AppointmentAdapter;
 import com.semeniuc.dmitrii.clientmanager.addeditappointment.AddEditAppointmentActivity;
 import com.semeniuc.dmitrii.clientmanager.login.LoginActivity;
 import com.semeniuc.dmitrii.clientmanager.model.Appointment;
+import com.semeniuc.dmitrii.clientmanager.utils.Constants;
 
 import java.util.List;
 
@@ -59,19 +59,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class AppointmentsFragment extends Fragment implements AppointmentsContract.View {
 
     private AppointmentsContract.Presenter presenter;
-
     private View noAppointmentsView;
-
     private ImageView noAppointmentIcon;
-
     private TextView noAppointmentMainView;
-
     private TextView noAppointmentAddView;
-
     private LinearLayout appointmentsView;
-
     private TextView filteringLabelView;
-
     private View root;
 
     public AppointmentsFragment() {
@@ -91,11 +84,6 @@ public class AppointmentsFragment extends Fragment implements AppointmentsContra
     public void onResume() {
         super.onResume();
         if (presenter != null) presenter.start();
-    }
-
-    @Override
-    public void setPresenter(@NonNull AppointmentsPresenter presenter) {
-        this.presenter = checkNotNull(presenter);
     }
 
     @Override
@@ -179,25 +167,6 @@ public class AppointmentsFragment extends Fragment implements AppointmentsContra
         popup.show();
     }
 
-    /**
-     * Listener for clicks on appointments in the ListView.
-     */
-    /*AppointmentItemListener itemListener = new AppointmentItemListener() {
-        @Override
-        public void onAppointmentClick(Appointment clickedAppointment) {
-            if (presenter != null) presenter.openAppointmentDetails(clickedAppointment);
-        }
-
-        @Override
-        public void onCompleteAppointmentClick(Appointment completedAppointment) {
-            if (presenter != null) presenter.completeAppointment(completedAppointment);
-        }
-
-        @Override
-        public void onActivateAppointmentClick(Appointment activatedAppointment) {
-            if (presenter != null) presenter.activateAppointment(activatedAppointment);
-        }
-    };*/
     @Override
     public void setLoadingIndicator(final boolean active) {
 
@@ -221,10 +190,9 @@ public class AppointmentsFragment extends Fragment implements AppointmentsContra
     }
 
     @Override public void showAppointments(List<Appointment> appointments) {
-        //listAdapter.replaceData(appointments);
         RecyclerView recyclerView = getRecyclerView();
         recyclerView.setAdapter(new AppointmentAdapter(appointments,
-                appointment -> reviewAppointment(appointment),
+                appointment -> editAppointment(appointment),
                 phoneNumber -> callToNumber(phoneNumber)));
 
         setSwipeRefresh(recyclerView);
@@ -248,7 +216,11 @@ public class AppointmentsFragment extends Fragment implements AppointmentsContra
         swipeRefreshLayout.setOnRefreshListener(() -> presenter.loadAppointments(false));
     }
 
-    private void reviewAppointment(Appointment appointment) {
+    private void editAppointment(Appointment appointment) {
+        Intent intent = new Intent(getContext(), AddEditAppointmentActivity.class);
+        intent.putExtra(Constants.TYPE, Constants.EDIT_APPOINTMENT);
+        intent.putExtra(Constants.APPOINTMENT_PATH, appointment);
+        startActivity(intent);
     }
 
     private void callToNumber(String phoneNumber) {
@@ -284,15 +256,13 @@ public class AppointmentsFragment extends Fragment implements AppointmentsContra
 
     @Override public void showAddAppointment() {
         Intent intent = new Intent(getContext(), AddEditAppointmentActivity.class);
+        intent.putExtra(Constants.TYPE, Constants.ADD_APPOINTMENT);
         startActivityForResult(intent, AddEditAppointmentActivity.REQUEST_ADD_APPOINTMENT);
     }
 
     @Override public void showAppointmentDetailsUi(String appointmentId) {
         // in it's own Activity, since it makes more sense that way and it gives us the flexibility
         // to show some Intent stubbing.
-        /*Intent intent = new Intent(getContext(), TaskDetailActivity.class);
-        intent.putExtra(TaskDetailActivity.EXTRA_TASK_ID, taskId);
-        startActivity(intent);*/
     }
 
     @Override public void showAppointmentMarkedComplete() {
@@ -379,90 +349,12 @@ public class AppointmentsFragment extends Fragment implements AppointmentsContra
         return isAdded();
     }
 
-/*    private static class AppointmentAdapter extends BaseAdapter {
-
-        private List<Appointment> appointments;
-        private AppointmentItemListener itemListener;
-
-        public AppointmentAdapter(List<Appointment> appointments, AppointmentItemListener itemListener) {
-            setList(appointments);
-            this.itemListener = itemListener;
-        }
-
-        public void replaceData(List<Appointment> appointments) {
-            setList(appointments);
-            notifyDataSetChanged();
-        }
-
-        private void setList(List<Appointment> appointments) {
-            this.appointments = checkNotNull(appointments);
-        }
-
-        @Override
-        public int getCount() {
-            return appointments.size();
-        }
-
-        @Override
-        public Appointment getItem(int i) {
-            return appointments.get(i);
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return i;
-        }
-
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            View rowView = view;
-            if (rowView == null) {
-                LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-                rowView = inflater.inflate(R.layout.appointment_item, viewGroup, false);
-            }
-
-            final Appointment appointment = getItem(i);
-
-            TextView titleTV = (TextView) rowView.findViewById(R.id.title);
-            titleTV.setText("Mock title");
-
-            CheckBox completeCB = (CheckBox) rowView.findViewById(R.id.complete);
-
-            // Active/completed task UI
-            completeCB.setChecked(appointment.isCompleted());
-            if (appointment.isCompleted()) {
-                rowView.setBackgroundDrawable(viewGroup.getContext()
-                        .getResources().getDrawable(R.drawable.list_completed_touch_feedback));
-            } else {
-                rowView.setBackgroundDrawable(viewGroup.getContext()
-                        .getResources().getDrawable(R.drawable.touch_feedback));
-            }
-
-            completeCB.setOnClickListener(v -> {
-                if (!appointment.isCompleted()) {
-                    itemListener.onCompleteAppointmentClick(appointment);
-                } else {
-                    itemListener.onActivateAppointmentClick(appointment);
-                }
-            });
-
-            rowView.setOnClickListener(view1 -> itemListener.onAppointmentClick(appointment));
-
-            return rowView;
-        }
-    }*/
-
-    public interface AppointmentItemListener {
-
-        void onAppointmentClick(Appointment clickedAppointment);
-
-        void onCompleteAppointmentClick(Appointment completedAppointment);
-
-        void onActivateAppointmentClick(Appointment activatedAppointment);
-    }
-
     @Override public void onDestroyView() {
         super.onDestroyView();
         presenter = null;
+    }
+
+    @Override public void setPresenter(AppointmentsContract.Presenter presenter) {
+        this.presenter = checkNotNull(presenter);
     }
 }

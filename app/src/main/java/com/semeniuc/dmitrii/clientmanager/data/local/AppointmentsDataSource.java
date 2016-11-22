@@ -24,12 +24,14 @@ public interface AppointmentsDataSource {
 
     interface SaveAppointmentCallBack{
 
-        void onAppoinmentSavingFailed();
+        void onAppointmentSavingFailed();
+
+        void onAppointmentSaved();
     }
 
     void getAppointments(@NonNull LoadAppointmentsCallback callback);
 
-    void getAppointment(@NonNull String appointmentId, @NonNull GetAppointmentCallback callback);
+    void getAppointment(@NonNull Integer appointmentId, @NonNull GetAppointmentCallback callback);
 
     void saveAppointment(@NonNull Appointment appointment, @NonNull SaveAppointmentCallBack callback);
 

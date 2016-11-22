@@ -41,6 +41,9 @@ public class Constants {
     public static final String APPOINTMENT_PATH =
             Appointment.class.getPackage().getName().concat(DOT + Appointment.class.getSimpleName());
 
+    public static final String TYPE = "type";
+    public static final String ADD_APPOINTMENT = "add";
+    public static final String EDIT_APPOINTMENT = "edit";
     public static final int PERMISSIONS_REQUEST_CALL_PHONE = 5555;
 
     // Images

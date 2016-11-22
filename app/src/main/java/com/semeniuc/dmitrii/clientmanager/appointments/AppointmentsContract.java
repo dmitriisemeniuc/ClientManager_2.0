@@ -14,7 +14,7 @@ import java.util.List;
 
 public interface AppointmentsContract {
 
-    interface View extends BaseView<AppointmentsPresenter> {
+    interface View extends BaseView<Presenter> {
 
         void setLoadingIndicator(boolean active);
 

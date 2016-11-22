@@ -26,7 +26,7 @@ import butterknife.OnClick;
 
 public class LoginActivity extends BaseActivity implements LoginContract.View {
 
-    private LoginPresenter presenter;
+    private LoginContract.Presenter presenter;
     private ProgressDialog progressDialog;
 
     @Inject ActivityUtils utils;
@@ -44,7 +44,10 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     @OnClick(R.id.login_button) void emailLogin() {
         loginWithEmail();
     }
-    @OnClick(R.id.login_registration_link) void register() { goToRegistrationActivity(); }
+
+    @OnClick(R.id.login_registration_link) void register() {
+        goToRegistrationActivity();
+    }
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         ((App) getApplication()).getComponent().inject(this);
@@ -60,10 +63,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         if (requestCode == Constants.RC_SIGN_IN) {
             presenter.onLoginWithGoogle(Auth.GoogleSignInApi.getSignInResultFromIntent(data));
         }
-    }
-
-    @Override public void setPresenter(LoginPresenter presenter) {
-        this.presenter = presenter;
     }
 
     @Override public void showProgress() {
@@ -138,5 +137,9 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     private void goToRegistrationActivity() {
         startActivity(new Intent(this, RegistrationActivity.class));
         finish();
+    }
+
+    @Override public void setPresenter(LoginContract.Presenter presenter) {
+        this.presenter = presenter;
     }
 }

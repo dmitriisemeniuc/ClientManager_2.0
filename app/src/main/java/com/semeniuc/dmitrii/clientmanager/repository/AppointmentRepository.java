@@ -1,6 +1,7 @@
 package com.semeniuc.dmitrii.clientmanager.repository;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.semeniuc.dmitrii.clientmanager.data.local.AppointmentsDataSource;
 import com.semeniuc.dmitrii.clientmanager.data.local.AppointmentsLocalDataSource;
@@ -20,13 +21,13 @@ public final class AppointmentRepository implements AppointmentsDataSource{
     public static final String LOG_TAG = AppointmentRepository.class.getSimpleName();
     public static final boolean DEBUG = Constants.DEBUG;
 
-    private DatabaseHelper helper;
+    private DatabaseHelper dbHelper;
     private AppointmentsLocalDataSource localDataSource;
 
     /**
      * This variable has package local visibility so it can be accessed from tests.
      */
-    Map<Long, Appointment> cachedAppointments;
+    Map<Integer, Appointment> cachedAppointments;
 
     /**
      * Marks the cache as invalid, to force an update the next time data is requested. This variable
@@ -35,7 +36,7 @@ public final class AppointmentRepository implements AppointmentsDataSource{
     boolean cacheIsDirty = false;
 
     public AppointmentRepository(DatabaseHelper dbHelper, AppointmentsLocalDataSource lDataSource){
-        helper = dbHelper;
+        this.dbHelper = dbHelper;
         localDataSource = lDataSource;
     }
 
@@ -79,16 +80,54 @@ public final class AppointmentRepository implements AppointmentsDataSource{
         cacheIsDirty = false;
     }
 
-    public void getAppointment(@NonNull String appointmentId,
+    public void getAppointment(@NonNull Integer appointmentId,
                                @NonNull AppointmentsDataSource.GetAppointmentCallback callback) {
+        checkNotNull(appointmentId);
+        checkNotNull(callback);
 
+        Appointment cachedAppointment = getAppointmentWithId(appointmentId);
+
+        // Respond immediately with cache if available
+        if (cachedAppointment != null) {
+            callback.onAppointmentLoaded(cachedAppointment);
+            return;
+        }
+
+        // Load from server/persisted if needed.
+
+        // Is the appointment in the local data source? If not, query the network.
+        localDataSource.getAppointment(appointmentId, new GetAppointmentCallback() {
+            @Override
+            public void onAppointmentLoaded(Appointment appointment) {
+                // Do in memory cache update to keep the app UI up to date
+                if (cachedAppointments == null) {
+                    cachedAppointments = new LinkedHashMap<>();
+                }
+                cachedAppointments.put(appointment.getId(), appointment);
+                callback.onAppointmentLoaded(appointment);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                // Here we can get data from network
+                callback.onDataNotAvailable();
+            }
+        });
+    }
+
+    @Nullable
+    private Appointment getAppointmentWithId(Integer appointmentId) {
+        if (cachedAppointments == null || cachedAppointments.isEmpty()) {
+            return null;
+        } else {
+            return cachedAppointments.get(appointmentId);
+        }
     }
 
     @Override
     public void saveAppointment(@NonNull Appointment appointment, @NonNull SaveAppointmentCallBack callback) {
         checkNotNull(appointment);
-        boolean saved = localDataSource.saveAppointment(appointment, callback);
-        if(!saved) return;
+        localDataSource.saveAppointment(appointment, callback);
         // Do in memory cache update to keep the app UI up to date
         if (cachedAppointments == null) {
             cachedAppointments = new LinkedHashMap<>();
@@ -131,11 +170,11 @@ public final class AppointmentRepository implements AppointmentsDataSource{
     /*private static final AppointmentRepository instance = new AppointmentRepository();
     public static final String LOG_TAG = AppointmentRepository.class.getSimpleName();
     public static final boolean DEBUG = Constants.DEBUG;
-    private static final DatabaseHelper helper;
+    private static final DatabaseHelper dbHelper;
 
     static{
         DatabaseManager.init(MyApplication.getInstance().getApplicationContext());
-        helper = DatabaseManager.getInstance().getHelper();
+        dbHelper = DatabaseManager.getInstance().getHelper();
     }
 
     private AppointmentRepository() {
@@ -150,7 +189,7 @@ public final class AppointmentRepository implements AppointmentsDataSource{
         int index = -1;
         Appointment appointment = (Appointment) item;
         try {
-            index = helper.getAppointmentDao().create(appointment);
+            index = dbHelper.getAppointmentDao().create(appointment);
             if (DEBUG) Log.i(LOG_TAG, "created: " + index);
         } catch (java.sql.SQLException e) {
             e.printStackTrace();
@@ -163,7 +202,7 @@ public final class AppointmentRepository implements AppointmentsDataSource{
         int index = -1;
         Appointment appointment = (Appointment) item;
         try {
-            Dao<Appointment, Integer> appointmentDAO = helper.getAppointmentDao();
+            Dao<Appointment, Integer> appointmentDAO = dbHelper.getAppointmentDao();
             QueryBuilder<Appointment, Integer> queryBuilder = appointmentDAO.queryBuilder();
             queryBuilder.where().eq(Appointment.ID_FIELD_NAME, appointment.getId());
             PreparedQuery<Appointment> preparedQuery = queryBuilder.prepare();
@@ -182,7 +221,7 @@ public final class AppointmentRepository implements AppointmentsDataSource{
         int index = -1;
         Appointment appointment = (Appointment) item;
         try {
-            index = helper.getAppointmentDao().delete(appointment);
+            index = dbHelper.getAppointmentDao().delete(appointment);
             if (DEBUG) Log.i(LOG_TAG, "deleted: " + index);
         } catch (java.sql.SQLException e) {
             e.printStackTrace();
@@ -194,7 +233,7 @@ public final class AppointmentRepository implements AppointmentsDataSource{
     public Object findById(int id) {
         Appointment appointment = null;
         try {
-            appointment = helper.getAppointmentDao().queryForId(id);
+            appointment = dbHelper.getAppointmentDao().queryForId(id);
         } catch (java.sql.SQLException e) {
             e.printStackTrace();
         }
@@ -206,7 +245,7 @@ public final class AppointmentRepository implements AppointmentsDataSource{
         List<Appointment> items = null;
         long id = MyApplication.getInstance().getUser().getId();
         try {
-            Dao<Appointment, Integer> appointmentDAO = helper.getAppointmentDao();
+            Dao<Appointment, Integer> appointmentDAO = dbHelper.getAppointmentDao();
             QueryBuilder<Appointment, Integer> queryBuilder = appointmentDAO.queryBuilder();
             Where<Appointment, Integer> where = queryBuilder.where();
             where.eq(Appointment.USER_FIELD_NAME, id);
@@ -222,7 +261,7 @@ public final class AppointmentRepository implements AppointmentsDataSource{
         List<Appointment> items = null;
         long id = MyApplication.getInstance().getUser().getId();
         try {
-            Dao<Appointment, Integer> appointmentDAO = helper.getAppointmentDao();
+            Dao<Appointment, Integer> appointmentDAO = dbHelper.getAppointmentDao();
             QueryBuilder<Appointment, Integer> queryBuilder = appointmentDAO.queryBuilder();
             Where<Appointment, Integer> where = queryBuilder.where();
             where.or(
@@ -250,7 +289,7 @@ public final class AppointmentRepository implements AppointmentsDataSource{
         List<Appointment> items = null;
         long id = MyApplication.getInstance().getUser().getId();
         try {
-            Dao<Appointment, Integer> appointmentDAO = helper.getAppointmentDao();
+            Dao<Appointment, Integer> appointmentDAO = dbHelper.getAppointmentDao();
             QueryBuilder<Appointment, Integer> queryBuilder = appointmentDAO.queryBuilder();
             Where<Appointment, Integer> where = queryBuilder.where();
             where.or(
@@ -278,7 +317,7 @@ public final class AppointmentRepository implements AppointmentsDataSource{
         List<Appointment> items = null;
         long id = MyApplication.getInstance().getUser().getId();
         try {
-            Dao<Appointment, Integer> appointmentDAO = helper.getAppointmentDao();
+            Dao<Appointment, Integer> appointmentDAO = dbHelper.getAppointmentDao();
             QueryBuilder<Appointment, Integer> queryBuilder = appointmentDAO.queryBuilder();
             Where<Appointment, Integer> where = queryBuilder.where();
             where.and(
@@ -297,7 +336,7 @@ public final class AppointmentRepository implements AppointmentsDataSource{
         List<Appointment> items = null;
         long id = MyApplication.getInstance().getUser().getId();
         try {
-            Dao<Appointment, Integer> appointmentDAO = helper.getAppointmentDao();
+            Dao<Appointment, Integer> appointmentDAO = dbHelper.getAppointmentDao();
             QueryBuilder<Appointment, Integer> queryBuilder = appointmentDAO.queryBuilder();
             Where<Appointment, Integer> where = queryBuilder.where();
             where.and(

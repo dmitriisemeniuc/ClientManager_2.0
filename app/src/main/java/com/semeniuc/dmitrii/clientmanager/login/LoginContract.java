@@ -11,7 +11,7 @@ import com.semeniuc.dmitrii.clientmanager.BaseView;
 
 public interface LoginContract {
 
-    interface View extends BaseView<LoginPresenter> {
+    interface View extends BaseView<Presenter> {
 
         void showProgress();
 

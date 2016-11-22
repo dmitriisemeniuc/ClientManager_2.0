@@ -42,6 +42,7 @@
     <color name="info_text_color">#666666</color>
     <color name="light_green">#DCEDC8</color>
     <color name="light_yellow">#FFF9C4</color>
+    <color name="text_hint">#BDBDBD</color>
     <drawable name="touchFeedback">#CFD8DC</drawable>
     <drawable name="completedTaskBackground">#CCCCCC</drawable>
 </resources>

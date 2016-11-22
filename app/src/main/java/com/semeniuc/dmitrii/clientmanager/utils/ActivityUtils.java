@@ -10,10 +10,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
+import com.semeniuc.dmitrii.clientmanager.R;
 import com.semeniuc.dmitrii.clientmanager.model.Appointment;
 import com.semeniuc.dmitrii.clientmanager.model.User;
 
@@ -159,5 +161,78 @@ public class ActivityUtils implements Utils.Activity {
     public void hideKeyboard(ViewGroup mainLayout) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mainLayout.getWindowToken(), 0);
+    }
+
+    public void changeImage(int image, Appointment appointment, AppCompatImageView imageView) {
+        switch (image) {
+            case Constants.PAID:
+                if (appointment.isPaid()) imageView.setImageResource(R.mipmap.ic_money_paid_yes);
+                else imageView.setImageResource(R.mipmap.ic_money_paid_no);
+                break;
+            case Constants.DONE:
+                if (appointment.isCompleted()) imageView.setImageResource(R.mipmap.ic_ok_yes);
+                else imageView.setImageResource(R.mipmap.ic_ok_no);
+                break;
+            case Constants.HAIR_COLORING:
+                if (appointment.getService().isHairColoring())
+                    imageView.setImageResource(R.mipmap.ic_paint_yes);
+                else imageView.setImageResource(R.mipmap.ic_paint_no);
+                break;
+            case Constants.HAIRDO:
+                if (appointment.getService().isHairdo())
+                    imageView.setImageResource(R.mipmap.ic_womans_hair_yes);
+                else imageView.setImageResource(R.mipmap.ic_womans_hair_no);
+                break;
+            case Constants.HAIR_CUT:
+                if (appointment.getService().isHaircut())
+                    imageView.setImageResource(R.mipmap.ic_scissors_yes);
+                else imageView.setImageResource(R.mipmap.ic_scissors_no);
+                break;
+            case Constants.BRUSH:
+                if (appointment.getTools().isBrush())
+                    imageView.setImageResource(R.mipmap.ic_brush_yes);
+                else imageView.setImageResource(R.mipmap.ic_brush_no);
+                break;
+            case Constants.HAIR_BRUSH:
+                if (appointment.getTools().isHairBrush())
+                    imageView.setImageResource(R.mipmap.ic_hair_brush_yes);
+                else imageView.setImageResource(R.mipmap.ic_hair_brush_no);
+                break;
+            case Constants.HAIR_DRAYER:
+                if (appointment.getTools().isHairDryer())
+                    imageView.setImageResource(R.mipmap.ic_hair_dryer_yes);
+                else imageView.setImageResource(R.mipmap.ic_hair_dryer_no);
+                break;
+            case Constants.OXY:
+                if (appointment.getTools().isOxy())
+                    imageView.setImageResource(R.mipmap.ic_soap_yes);
+                else imageView.setImageResource(R.mipmap.ic_soap_no);
+                break;
+            case Constants.CUT_SET:
+                if (appointment.getTools().isCutSet())
+                    imageView.setImageResource(R.mipmap.ic_cutset_yes);
+                else imageView.setImageResource(R.mipmap.ic_cutset_no);
+                break;
+            case Constants.HAIR_BAND:
+                if (appointment.getTools().isHairBand())
+                    imageView.setImageResource(R.mipmap.ic_hair_band_yes);
+                else imageView.setImageResource(R.mipmap.ic_hair_band_no);
+                break;
+            case Constants.SPRAY:
+                if (appointment.getTools().isSpray())
+                    imageView.setImageResource(R.mipmap.ic_spray_yes);
+                else imageView.setImageResource(R.mipmap.ic_spray_no);
+                break;
+            case Constants.TUBE:
+                if (appointment.getTools().isTube())
+                    imageView.setImageResource(R.mipmap.ic_tube_yes);
+                else imageView.setImageResource(R.mipmap.ic_tube_no);
+                break;
+            case Constants.TRIMMER:
+                if (appointment.getTools().isTrimmer())
+                    imageView.setImageResource(R.mipmap.ic_trimmer_yes);
+                else imageView.setImageResource(R.mipmap.ic_trimmer_no);
+                break;
+        }
     }
 }

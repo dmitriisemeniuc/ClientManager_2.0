@@ -23,7 +23,7 @@ import butterknife.OnClick;
 
 public class RegistrationActivity extends BaseActivity implements RegistrationContract.View {
 
-    private RegistrationPresenter presenter;
+    private RegistrationContract.Presenter presenter;
     private ProgressDialog progressDialog;
 
     @Inject User user;
@@ -47,10 +47,6 @@ public class RegistrationActivity extends BaseActivity implements RegistrationCo
         setContentView(R.layout.activity_registration);
         ButterKnife.bind(this); // Butterknife
         setPresenter(new RegistrationPresenter(this));
-    }
-
-    @Override public void setPresenter(RegistrationPresenter presenter) {
-        this.presenter = presenter;
     }
 
     private void registerWithEmail() {
@@ -99,5 +95,9 @@ public class RegistrationActivity extends BaseActivity implements RegistrationCo
         if (null != progressDialog && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
+    }
+
+    @Override public void setPresenter(RegistrationContract.Presenter presenter) {
+            this.presenter = presenter;
     }
 }

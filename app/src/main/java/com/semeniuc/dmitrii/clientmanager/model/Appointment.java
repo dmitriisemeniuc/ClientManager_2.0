@@ -25,7 +25,7 @@ public class Appointment implements Parcelable {
     public static final String COMPLETED_FIELD_NAME = "completed";
 
     @DatabaseField(generatedId = true, columnName = ID_FIELD_NAME)
-    private long id;
+    private int id;
     @DatabaseField(canBeNull = false, foreign = true, columnName = USER_FIELD_NAME)
     private User user;
     @DatabaseField(canBeNull = false, foreign = true, foreignAutoCreate = true,
@@ -70,7 +70,7 @@ public class Appointment implements Parcelable {
     }
 
     // Constructor for creating new Appointment with specified id
-    public Appointment(long id, User user, Client client, Service service,
+    public Appointment(int id, User user, Client client, Service service,
                        Tools tools, String info, Date date, String sum, boolean paid, boolean completed) {
         this.id = id;
         this.user = user;
@@ -110,7 +110,7 @@ public class Appointment implements Parcelable {
 
     private void readFromParcel(Parcel in) {
         // Read back each field in the order that it was written to the parcel
-        id = in.readLong();
+        id = in.readInt();
         user = in.readParcelable(User.class.getClassLoader());
         client = in.readParcelable(Client.class.getClassLoader());
         service = in.readParcelable(Service.class.getClassLoader());
@@ -141,11 +141,11 @@ public class Appointment implements Parcelable {
         return completed;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
