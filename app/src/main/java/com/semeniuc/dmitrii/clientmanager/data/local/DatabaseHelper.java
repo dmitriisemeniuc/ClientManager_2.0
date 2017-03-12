@@ -15,7 +15,7 @@ import com.semeniuc.dmitrii.clientmanager.model.Contact;
 import com.semeniuc.dmitrii.clientmanager.model.Service;
 import com.semeniuc.dmitrii.clientmanager.model.Tools;
 import com.semeniuc.dmitrii.clientmanager.model.User;
-import com.semeniuc.dmitrii.clientmanager.utils.Constants;
+import com.semeniuc.dmitrii.clientmanager.utils.Const;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ import java.util.List;
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     private static final String LOG_TAG = DatabaseHelper.class.getSimpleName();
-    private static final boolean DEBUG = Constants.DEBUG;
+    private static final boolean DEBUG = Const.DEBUG;
 
     private static final String DATABASE_NAME = "ClientManagerDB.sqlite";
 

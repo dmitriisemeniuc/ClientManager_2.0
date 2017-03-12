@@ -15,7 +15,7 @@ import com.semeniuc.dmitrii.clientmanager.main.MainActivity;
 import com.semeniuc.dmitrii.clientmanager.model.User;
 import com.semeniuc.dmitrii.clientmanager.registr.RegistrationActivity;
 import com.semeniuc.dmitrii.clientmanager.utils.ActivityUtils;
-import com.semeniuc.dmitrii.clientmanager.utils.Constants;
+import com.semeniuc.dmitrii.clientmanager.utils.Const;
 import com.semeniuc.dmitrii.clientmanager.utils.GoogleAuthenticator;
 
 import javax.inject.Inject;
@@ -33,18 +33,18 @@ public class LoginActivity extends BaseActivity implements LoginView {
     @Inject GoogleAuthenticator googleAuthenticator;
     @Inject User user;
 
-    @BindView(R.id.login_et_email) AppCompatEditText editTextEmail;
-    @BindView(R.id.login_et_password) AppCompatEditText editTextPassword;
+    @BindView(R.id.login_email_et) AppCompatEditText editTextEmail;
+    @BindView(R.id.login_password_et) AppCompatEditText editTextPassword;
     @BindView(R.id.main_login_layout) ViewGroup mainLayout;
 
-    @OnClick(R.id.login_with_google_button) void googleLogin() {
+    @OnClick(R.id.login_with_google_btn) void googleLogin() {
         loginWithGoogle();
     }
 
-    @OnClick(R.id.login_button) void emailLogin() {
+    @OnClick(R.id.login_btn) void emailLogin() {
         loginWithEmail();
     }
-    @OnClick(R.id.login_registration_link) void register() { goToRegistrationActivity(); }
+    @OnClick(R.id.login_registration_link_tv) void register() { goToRegistrationActivity(); }
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         ((App) getApplication()).getComponent().inject(this);
@@ -57,7 +57,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Constants.RC_SIGN_IN) {
+        if (requestCode == Const.Action.SIGN_IN) {
             presenter.onLoginWithGoogle(Auth.GoogleSignInApi.getSignInResultFromIntent(data));
         }
     }
@@ -101,7 +101,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
 
     @Override public void loginWithGoogle() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleAuthenticator.getApiClient());
-        startActivityForResult(signInIntent, Constants.RC_SIGN_IN);
+        startActivityForResult(signInIntent, Const.Action.SIGN_IN);
     }
 
     @Override public void loginWithEmail() {

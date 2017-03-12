@@ -15,7 +15,7 @@ import com.semeniuc.dmitrii.clientmanager.App;
 import com.semeniuc.dmitrii.clientmanager.data.local.DatabaseTaskHelper;
 import com.semeniuc.dmitrii.clientmanager.model.User;
 import com.semeniuc.dmitrii.clientmanager.utils.ActivityUtils;
-import com.semeniuc.dmitrii.clientmanager.utils.Constants;
+import com.semeniuc.dmitrii.clientmanager.utils.Const;
 import com.semeniuc.dmitrii.clientmanager.utils.GoogleAuthenticator;
 
 import javax.inject.Inject;
@@ -39,23 +39,23 @@ public class LoginInteractorImpl implements LoginInteractor {
     }
 
     @Override
-    public void loginWithGoogle(GoogleSignInResult result, OnGoogleLoginFinishedListener listener) {
+    public void loginWithGoogle(GoogleSignInResult result, OnGoogleLoginListener listener) {
         if (result.isSuccess()) {
             boolean userCreated = setGoogleUserDetails(result);
             if (userCreated) saveGoogleUser(listener);
         } else if (!utils.isNetworkAvailable())
             listener.onNoInternetAccess();
         else
-            listener.onGoogleLoginError();
+            listener.onLoginError();
     }
 
     @Override
-    public void loginWithEmail(String email, String password, OnLoginFinishedListener listener) {
+    public void loginWithEmail(String email, String password, OnLoginListener listener) {
         if (!isLoginFieldsValid(email, password, listener)) return;
         User user = dbHelper.getUserByEmailAndPassword(email, password);
         if (user != null) {
             setEmailUserDetails(user);
-            utils.setUserInPrefs(Constants.REGISTERED_USER, this.user);
+            utils.setUserInPrefs(Const.UserType.REGISTERED, this.user);
             listener.onSuccess();
         } else {
             listener.onInvalidCredentials();
@@ -68,7 +68,7 @@ public class LoginInteractorImpl implements LoginInteractor {
         this.user.setPassword(user.getPassword());
     }
 
-    private boolean isLoginFieldsValid(String email, String password, OnLoginFinishedListener listener) {
+    private boolean isLoginFieldsValid(String email, String password, OnLoginListener listener) {
         boolean valid = true;
         if (TextUtils.isEmpty(email)) {
             listener.onUsernameError();
@@ -86,27 +86,27 @@ public class LoginInteractorImpl implements LoginInteractor {
      * It can be: user signed in with google account or logged via e-mail
      */
     @Override public void verifyUserType(Context context, FragmentActivity activity,
-                                         final OnVerifyUserTypeFinishedListener listener,
+                                         final OnVerifyUserTypeListener listener,
                                          LoginPresenter presenter) {
         String userType = utils.getUserFromPrefs();
-        if (userType.equals(Constants.GOOGLE_USER)) {
+        if (userType.equals(Const.UserType.GOOGLE)) {
             authenticator.setGoogleApiClient(context, activity);
-            SharedPreferences settings = utils.getSharedPreferences(Constants.LOGIN_PREFS);
-            boolean loggedIn = settings.getBoolean(Constants.LOGGED, false);
+            SharedPreferences settings = utils.getSharedPreferences(Const.LOGIN_PREFS);
+            boolean loggedIn = settings.getBoolean(Const.LOGGED, false);
             if (loggedIn)
                 silentSignInWithGoogle(authenticator.getOptionalPendingResult(), presenter);
             return;
         }
-        if (userType.equals(Constants.REGISTERED_USER)) {
-            SharedPreferences settings = utils.getSharedPreferences(Constants.LOGIN_PREFS);
-            boolean loggedIn = settings.getBoolean(Constants.LOGGED, false);
+        if (userType.equals(Const.UserType.REGISTERED)) {
+            SharedPreferences settings = utils.getSharedPreferences(Const.LOGIN_PREFS);
+            boolean loggedIn = settings.getBoolean(Const.LOGGED, false);
             if (loggedIn) {
-                email = settings.getString(Constants.EMAIL, Constants.EMPTY);
+                email = settings.getString(Const.EMAIL, Const.EMPTY);
                 if (!TextUtils.isEmpty(email)) setGlobalUser(listener);
             }
             return;
         }
-        if (userType.equals(Constants.NEW_USER))
+        if (userType.equals(Const.NEW_USER))
             authenticator.setGoogleApiClient(context, activity);
     }
 
@@ -158,16 +158,16 @@ public class LoginInteractorImpl implements LoginInteractor {
     /**
      * Set Google user to Global user and save it to DB
      */
-    private void saveGoogleUser(final OnGoogleLoginFinishedListener listener) {
+    private void saveGoogleUser(final OnGoogleLoginListener listener) {
         saveGoogleUserObservable.subscribe(new Subscriber<Integer>() {
 
             @Override
             public void onNext(Integer result) {
-                if (result == Constants.USER_SAVED || result == Constants.USER_EXISTS) {
-                    utils.setUserInPrefs(Constants.GOOGLE_USER, user);
-                    listener.onGoogleLoginSuccess();
+                if (result == Const.Action.USER_SAVED || result == Const.Action.USER_EXISTS) {
+                    utils.setUserInPrefs(Const.UserType.GOOGLE, user);
+                    listener.onLoginSuccess();
                 }
-                if (result == Constants.USER_NOT_SAVED || result == Constants.NO_DB_RESULT)
+                if (result == Const.Action.USER_NOT_SAVED || result == Const.Action.NO_DB_RESULT)
                     listener.onUserSavingFailed();
             }
 
@@ -177,7 +177,7 @@ public class LoginInteractorImpl implements LoginInteractor {
 
             @Override
             public void onError(Throwable e) {
-                listener.onGoogleLoginError();
+                listener.onLoginError();
                 e.getMessage();
             }
         });
@@ -194,17 +194,17 @@ public class LoginInteractorImpl implements LoginInteractor {
     /**
      * Set global user for silent sign in
      */
-    private void setGlobalUser(OnVerifyUserTypeFinishedListener listener) {
+    private void setGlobalUser(OnVerifyUserTypeListener listener) {
         setGlobalUserObservable.subscribe(new Subscriber<Integer>() {
 
             @Override
             public void onNext(Integer result) {
-                if (result == Constants.USER_SAVED) {
+                if (result == Const.Action.USER_SAVED) {
                     User user = dbHelper.getUserByEmail(email);
                     if (null != user) setEmailUserDetails(user);
-                    listener.onUserSaved();
+                    listener.onUserSavingSuccess();
                 }
-                if (result == Constants.USER_NOT_SAVED || result == Constants.NO_DB_RESULT)
+                if (result == Const.Action.USER_NOT_SAVED || result == Const.Action.NO_DB_RESULT)
                     listener.onUserSavingFailed();
             }
 

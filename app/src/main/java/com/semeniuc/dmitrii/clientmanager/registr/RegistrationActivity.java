@@ -28,16 +28,16 @@ public class RegistrationActivity extends BaseActivity implements RegistrationVi
 
     @Inject User user;
 
-    @BindView(R.id.registration_et_email) AppCompatEditText editTextEmail;
-    @BindView(R.id.registration_et_password) AppCompatEditText editTextPassword;
-    @BindView(R.id.registration_et_password_confirm) AppCompatEditText editTextConfirmPassword;
+    @BindView(R.id.registration_email_et) AppCompatEditText editTextEmail;
+    @BindView(R.id.registration_password_et) AppCompatEditText editTextPassword;
+    @BindView(R.id.registration_password_confirm_et) AppCompatEditText editTextConfirmPassword;
     @BindView(R.id.main_registration_layout) ViewGroup mainLayout;
 
-    @OnClick(R.id.registration_button) void emailRegistration() {
+    @OnClick(R.id.registration_btn) void emailRegistration() {
         registerWithEmail();
     }
 
-    @OnClick(R.id.registration_login_link) void login() {
+    @OnClick(R.id.registration_login_link_tv) void login() {
         goToLoginActivity();
     }
 

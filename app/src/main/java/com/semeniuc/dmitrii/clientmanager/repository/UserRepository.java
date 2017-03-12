@@ -7,14 +7,14 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 import com.semeniuc.dmitrii.clientmanager.data.local.DatabaseHelper;
 import com.semeniuc.dmitrii.clientmanager.model.User;
-import com.semeniuc.dmitrii.clientmanager.utils.Constants;
+import com.semeniuc.dmitrii.clientmanager.utils.Const;
 
 import java.util.List;
 
 public class UserRepository implements IRepository {
 
-    public static final String LOG_TAG = UserRepository.class.getSimpleName();
-    public static final boolean DEBUG = Constants.DEBUG;
+    private static final String LOG_TAG = UserRepository.class.getSimpleName();
+    private static final boolean DEBUG = Const.DEBUG;
     /*private static final UserRepository instance = new UserRepository();
 
     private static DatabaseHelper helper;

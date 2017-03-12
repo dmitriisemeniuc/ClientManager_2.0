@@ -15,51 +15,51 @@
         android:focusableInTouchMode="true">
 
     <RelativeLayout
-        android:id="@+id/login_layout"
+        android:id="@+id/login_rl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true">
 
         <android.support.v7.widget.AppCompatEditText
-            android:id="@+id/login_et_email"
+            android:id="@+id/login_email_et"
             style="@style/loginField"
             android:hint="@string/email"
             android:inputType="textEmailAddress"/>
 
         <android.support.v7.widget.AppCompatEditText
-            android:id="@+id/login_et_password"
+            android:id="@+id/login_password_et"
             style="@style/loginField"
-            android:layout_below="@+id/login_et_email"
+            android:layout_below="@+id/login_email_et"
             android:layout_margin="@dimen/activity_horizontal_margin"
             android:hint="@string/password"
             android:inputType="textVisiblePassword"/>
 
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/login_button"
+            android:id="@+id/login_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/login_et_password"
+            android:layout_below="@+id/login_password_et"
             android:layout_margin="@dimen/activity_horizontal_margin"
             android:background="@drawable/login_button"
-            android:textColor="@color/whiteTransparent70"
+            android:textColor="@color/white_transparent_70"
             android:text="@string/login"/>
 
         <RelativeLayout
-            android:id="@+id/login_line_separator"
+            android:id="@+id/login_line_separator_rl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/login_button"
+            android:layout_below="@+id/login_btn"
             android:layout_centerInParent="true">
 
             <View
-                android:id="@+id/login_divider_1"
+                android:id="@+id/login_divider_1_v"
                 android:layout_width="100dp"
                 android:layout_height="1px"
                 android:layout_centerVertical="true"
-                android:background="@color/whiteTransparent70"/>
+                android:background="@color/white_transparent_70"/>
 
             <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/login_or"
+                android:id="@+id/login_or_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -67,33 +67,33 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginStart="20dp"
-                android:layout_toEndOf="@+id/login_divider_1"
-                android:layout_toRightOf="@+id/login_divider_1"
+                android:layout_toEndOf="@+id/login_divider_1_v"
+                android:layout_toRightOf="@+id/login_divider_1_v"
                 android:fontFamily="monospace"
                 android:text="@string/or"
-                android:textColor="@color/whiteTransparent70"/>
+                android:textColor="@color/white_transparent_70"/>
 
             <View
                 android:layout_width="100dp"
                 android:layout_height="1px"
                 android:layout_centerVertical="true"
-                android:layout_toEndOf="@+id/login_or"
-                android:layout_toRightOf="@+id/login_or"
-                android:background="@color/whiteTransparent70"/>
+                android:layout_toEndOf="@+id/login_or_tv"
+                android:layout_toRightOf="@+id/login_or_tv"
+                android:background="@color/white_transparent_70"/>
         </RelativeLayout>
 
         <com.google.android.gms.common.SignInButton
-            android:id="@+id/login_with_google_button"
+            android:id="@+id/login_with_google_btn"
             style="@style/Login"
             android:layout_width="match_parent"
-            android:layout_below="@+id/login_line_separator"
+            android:layout_below="@+id/login_line_separator_rl"
             android:layout_margin="@dimen/activity_horizontal_margin"
             app:buttonSize="wide"/>
 
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/login_registration_layout"
+        android:id="@+id/login_registration_rl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -101,25 +101,25 @@
         android:gravity="center_horizontal">
 
         <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/login_registration_question"
+            android:id="@+id/login_registration_question_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
             android:text="@string/do_not_have_account_yet"
-            android:textColor="@color/whiteTransparent70"
+            android:textColor="@color/white_transparent_70"
             android:textSize="16sp"/>
 
         <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/login_registration_link"
+            android:id="@+id/login_registration_link_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
-            android:layout_toEndOf="@+id/login_registration_question"
-            android:layout_toRightOf="@+id/login_registration_question"
+            android:layout_toEndOf="@+id/login_registration_question_tv"
+            android:layout_toRightOf="@+id/login_registration_question_tv"
             android:fontFamily="sans-serif"
             android:text="@string/registration_link"
-            android:textColor="@color/whiteTransparent95"
+            android:textColor="@color/white_transparent_95"
             android:textSize="16sp"
             android:textStyle="bold"/>
     </RelativeLayout>

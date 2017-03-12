@@ -6,8 +6,8 @@ import android.view.ViewGroup;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 
-public class LoginPresenterImpl implements LoginPresenter, LoginInteractor.OnLoginFinishedListener,
-        LoginInteractor.OnGoogleLoginFinishedListener, LoginInteractor.OnVerifyUserTypeFinishedListener {
+public class LoginPresenterImpl implements LoginPresenter, LoginInteractor.OnLoginListener,
+        LoginInteractor.OnGoogleLoginListener, LoginInteractor.OnVerifyUserTypeListener {
 
     private LoginView loginView;
     private LoginInteractor loginInteractor;
@@ -68,12 +68,12 @@ public class LoginPresenterImpl implements LoginPresenter, LoginInteractor.OnLog
         loginInteractor.hideKeyboard(layout);
     }
 
-    @Override public void onGoogleLoginSuccess() {
+    @Override public void onLoginSuccess() {
         loginView.navigateToHome();
         loginView.showLoginMessage();
     }
 
-    @Override public void onGoogleLoginError() {
+    @Override public void onLoginError() {
         loginView.showGoogleLoginError();
     }
 
@@ -98,7 +98,7 @@ public class LoginPresenterImpl implements LoginPresenter, LoginInteractor.OnLog
         loginView.showLoginMessage();
     }
 
-    @Override public void onUserSaved() {
+    @Override public void onUserSavingSuccess() {
         loginView.showLoginMessage();
         loginView.navigateToHome();
     }

@@ -2,24 +2,41 @@ package com.semeniuc.dmitrii.clientmanager.utils;
 
 import com.semeniuc.dmitrii.clientmanager.model.Appointment;
 
-public class Constants {
+public class Const {
+
+    public class UserType {
+        public static final String GOOGLE = "google";
+        public static final String REGISTERED = "registered";
+    }
+
+    public class Action {
+        public static final int SIGN_IN = 901;
+        public static final int USER_SAVED = 102;
+        public static final int USER_NOT_SAVED = 103;
+        public static final int USER_EXISTS = 104;
+        public static final int NO_DB_RESULT = 105;
+    }
+
+    public class Status {
+        public static final boolean LOGGED_IN = true;
+        public static final boolean LOGGED_OUT = false;
+    }
+
+    public class Date {
+        public static final String TIME_FORMAT = "HH:mm";
+        public static final String DATE_FORMAT = "dd/MM/yyyy";
+        public static final String DATE_TIME_FORMAT = "dd/MM/yyyy HH:mm";
+    }
 
     public static final String USER = "user";
-    public static final String GOOGLE_USER = "google";
-    public static final String REGISTERED_USER = "registered";
-    public static final String NEW_USER = "new";
+    public static final String NEW_USER = "newUser";
     public static final String EMAIL = "email";
     public static final String LOGGED = "logged";
-    public static final boolean LOGGED_IN = true;
-    public static final boolean LOGGED_OUT = false;
+
     public static final String EMPTY = "";
     public static final String LOGIN_PREFS = "loginPrefs";
-    public static final int USER_SAVED = 101;
-    public static final int USER_NOT_SAVED = 102;
-    public static final int USER_EXISTS = 103;
-    public static final int NO_DB_RESULT = 404;
+
     public static final int SIZE_EMPTY = 0;
-    public static final int RC_SIGN_IN = 9001;
 
     public static final boolean DEBUG = true;
     public static final String DOT = ".";
@@ -32,10 +49,6 @@ public class Constants {
     public static final int ORDER_BY_CLIENT = 222;
     public static final int ARCHIVED_ORDER_BY_DATE = 333;
     public static final int ARCHIVED_ORDER_BY_CLIENT = 4444;
-
-    public static final String TIME_FORMAT = "HH:mm";
-    public static final String DATE_FORMAT = "dd/MM/yyyy";
-    public static final String DATE_TIME_FORMAT = "dd/MM/yyyy HH:mm";
 
     public static final String APPOINTMENT_PATH =
             Appointment.class.getPackage().getName().concat(DOT + Appointment.class.getSimpleName());

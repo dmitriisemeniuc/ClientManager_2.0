@@ -6,23 +6,23 @@ import android.os.Parcelable;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import com.semeniuc.dmitrii.clientmanager.utils.Constants;
+import com.semeniuc.dmitrii.clientmanager.utils.Const;
 
 import java.util.Date;
 
 @DatabaseTable
 public class Appointment implements Parcelable {
 
-    public static final String ID_FIELD_NAME = "_ID";
-    public static final String USER_FIELD_NAME = "user_id";
-    public static final String CLIENT_FIELD_NAME = "client";
-    public static final String SERVICE_FIELD_NAME = "service";
-    public static final String TOOLS_FIELD_NAME = "tools";
-    public static final String INFO_FIELD_NAME = "info";
-    public static final String DATE_FIELD_NAME = "date";
-    public static final String SUM_FIELD_NAME = "sum";
-    public static final String PAID_FIELD_NAME = "paid";
-    public static final String DONE_FIELD_NAME = "done";
+    private static final String ID_FIELD_NAME = "_ID";
+    private static final String USER_FIELD_NAME = "user_id";
+    private static final String CLIENT_FIELD_NAME = "client";
+    private static final String SERVICE_FIELD_NAME = "service";
+    private static final String TOOLS_FIELD_NAME = "tools";
+    private static final String INFO_FIELD_NAME = "info";
+    private static final String DATE_FIELD_NAME = "date";
+    private static final String SUM_FIELD_NAME = "sum";
+    private static final String PAID_FIELD_NAME = "paid";
+    private static final String DONE_FIELD_NAME = "done";
 
     @DatabaseField(generatedId = true, columnName = ID_FIELD_NAME)
     private long id;
@@ -43,7 +43,7 @@ public class Appointment implements Parcelable {
     @DatabaseField(canBeNull = true, columnName = INFO_FIELD_NAME)
     private String info;
     @DatabaseField(canBeNull = false, columnName = DATE_FIELD_NAME,
-            dataType = DataType.DATE_STRING, format = Constants.DATE_TIME_FORMAT)
+            dataType = DataType.DATE_STRING, format = Const.Date.DATE_TIME_FORMAT)
     private Date date;
     @DatabaseField(canBeNull = true, columnName = SUM_FIELD_NAME)
     private String sum;
@@ -213,20 +213,16 @@ public class Appointment implements Parcelable {
         this.done = done;
     }
 
-    public String getClientContactPhone(){
-        if(getClient() != null){
-            if(getClient().getContact() != null){
-                return getClient().getContact().getPhone();
-            }
+    public String getClientContactPhone() {
+        if (getClient() != null && getClient().getContact() != null) {
+            return getClient().getContact().getPhone();
         }
         return "";
     }
 
-    public String getClientContactAddress(){
-        if(getClient() != null){
-            if(getClient().getContact() != null){
-                return getClient().getContact().getAddress();
-            }
+    public String getClientContactAddress() {
+        if (getClient() != null && getClient().getContact() != null) {
+            return getClient().getContact().getAddress();
         }
         return "";
     }

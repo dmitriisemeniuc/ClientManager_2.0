@@ -3,7 +3,7 @@ package com.semeniuc.dmitrii.clientmanager.data.local;
 import com.semeniuc.dmitrii.clientmanager.App;
 import com.semeniuc.dmitrii.clientmanager.model.User;
 import com.semeniuc.dmitrii.clientmanager.repository.UserRepository;
-import com.semeniuc.dmitrii.clientmanager.utils.Constants;
+import com.semeniuc.dmitrii.clientmanager.utils.Const;
 
 import java.util.List;
 
@@ -32,19 +32,19 @@ public class DatabaseTaskHelper implements DatabaseManager.UserManager {
 
     @Override public Integer saveGoogleUser(User user) {
         List<User> users = userRepository.findByEmail(user.getEmail());
-        if (null == users) return Constants.NO_DB_RESULT;
-        if (users.size() == Constants.SIZE_EMPTY) {
+        if (null == users) return Const.Action.NO_DB_RESULT;
+        if (users.size() == Const.SIZE_EMPTY) {
             // CREATE USER
             int index = userRepository.create(user);
             if (index == 1) {
                 userGlobal = userRepository.findByEmail(user.getEmail()).get(0);
-                return Constants.USER_SAVED;
+                return Const.Action.USER_SAVED;
             }
-            return Constants.USER_NOT_SAVED;
+            return Const.Action.USER_NOT_SAVED;
         } else {
             // USER EXISTS
             userGlobal = users.get(0);
-            return Constants.USER_EXISTS;
+            return Const.Action.USER_EXISTS;
         }
     }
 
@@ -53,19 +53,19 @@ public class DatabaseTaskHelper implements DatabaseManager.UserManager {
         if (index == 1) {
             List<User> users = userRepository.findByEmail(user.getEmail());
             userGlobal = users.get(0);
-            return Constants.USER_SAVED;
+            return Const.Action.USER_SAVED;
         }
-        return Constants.USER_NOT_SAVED;
+        return Const.Action.USER_NOT_SAVED;
     }
 
     @Override public Integer setGlobalUserWithEmail(String email) {
         List<User> users = userRepository.findByEmail(email);
-        if (null == users) return Constants.NO_DB_RESULT;
+        if (null == users) return Const.Action.NO_DB_RESULT;
         if (users.size() > 0) {
             userGlobal = users.get(0);
-            return Constants.USER_SAVED;
+            return Const.Action.USER_SAVED;
         }
-        return Constants.USER_NOT_SAVED;
+        return Const.Action.USER_NOT_SAVED;
     }
 
     /*public Integer saveAppointment(Appointment appointment){

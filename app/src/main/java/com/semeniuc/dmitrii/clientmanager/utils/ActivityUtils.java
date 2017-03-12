@@ -72,14 +72,14 @@ public class ActivityUtils implements Utils.Activity {
 
     public Calendar getDateForDialog(String date) {
         final Calendar calendar = Calendar.getInstance();
-        Date dateForDialog = convertStringToDate(date, Constants.DATE_FORMAT);
+        Date dateForDialog = convertStringToDate(date, Const.Date.DATE_FORMAT);
         calendar.setTime(dateForDialog);
         return calendar;
     }
 
     public Calendar getTimeForDialog(String time) {
         final Calendar calendar = Calendar.getInstance();
-        Date dateForDialog = convertStringToDate(time, Constants.TIME_FORMAT);
+        Date dateForDialog = convertStringToDate(time, Const.Date.TIME_FORMAT);
         calendar.setTime(dateForDialog);
         return calendar;
     }
@@ -125,8 +125,8 @@ public class ActivityUtils implements Utils.Activity {
 
     public String getUserFromPrefs() {
         SharedPreferences settings = context.getSharedPreferences(
-                Constants.LOGIN_PREFS, Context.MODE_PRIVATE);
-        return settings.getString(Constants.USER, Constants.NEW_USER);
+                Const.LOGIN_PREFS, Context.MODE_PRIVATE);
+        return settings.getString(Const.USER, Const.NEW_USER);
     }
 
     public SharedPreferences getSharedPreferences(String prefs) {
@@ -134,15 +134,15 @@ public class ActivityUtils implements Utils.Activity {
     }
 
     public void setUserInPrefs(String userString, User user) {
-        SharedPreferences.Editor editor = getEditor(Constants.LOGIN_PREFS);
-        if (userString.equals(Constants.NEW_USER)) {
-            editor.putString(Constants.USER, Constants.NEW_USER);
-            editor.putString(Constants.EMAIL, Constants.EMPTY);
-            editor.putBoolean(Constants.LOGGED, Constants.LOGGED_OUT);
+        SharedPreferences.Editor editor = getEditor(Const.LOGIN_PREFS);
+        if (userString.equals(Const.NEW_USER)) {
+            editor.putString(Const.USER, Const.NEW_USER);
+            editor.putString(Const.EMAIL, Const.EMPTY);
+            editor.putBoolean(Const.LOGGED, Const.Status.LOGGED_OUT);
         } else {
-            editor.putString(Constants.USER, userString);
-            editor.putString(Constants.EMAIL, user.getEmail());
-            editor.putBoolean(Constants.LOGGED, Constants.LOGGED_IN);
+            editor.putString(Const.USER, userString);
+            editor.putString(Const.EMAIL, user.getEmail());
+            editor.putBoolean(Const.LOGGED, Const.Status.LOGGED_IN);
         }
         editor.commit();
     }

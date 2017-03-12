@@ -9,7 +9,7 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 
 public interface LoginInteractor {
 
-    interface OnLoginFinishedListener {
+    interface OnLoginListener {
 
         void onUsernameError();
 
@@ -20,11 +20,11 @@ public interface LoginInteractor {
         void onInvalidCredentials();
     }
 
-    interface OnGoogleLoginFinishedListener {
+    interface OnGoogleLoginListener {
 
-        void onGoogleLoginSuccess();
+        void onLoginSuccess();
 
-        void onGoogleLoginError();
+        void onLoginError();
 
         void onNoInternetAccess();
 
@@ -32,9 +32,9 @@ public interface LoginInteractor {
 
     }
 
-    interface OnVerifyUserTypeFinishedListener {
+    interface OnVerifyUserTypeListener {
 
-        void onUserSaved();
+        void onUserSavingSuccess();
 
         void onUserSavingFailed();
     }
@@ -44,12 +44,12 @@ public interface LoginInteractor {
         void onLogout();
     }
 
-    void loginWithGoogle(GoogleSignInResult result, OnGoogleLoginFinishedListener listener);
+    void loginWithGoogle(GoogleSignInResult result, OnGoogleLoginListener listener);
 
-    void loginWithEmail(String email, String password, OnLoginFinishedListener listener);
+    void loginWithEmail(String email, String password, OnLoginListener listener);
 
     void verifyUserType(Context ctx, FragmentActivity activity,
-                        OnVerifyUserTypeFinishedListener listener, LoginPresenter presenter);
+                        OnVerifyUserTypeListener listener, LoginPresenter presenter);
 
     void silentSignInWithGoogle(OptionalPendingResult<GoogleSignInResult> opr,
                                 LoginPresenter presenter);

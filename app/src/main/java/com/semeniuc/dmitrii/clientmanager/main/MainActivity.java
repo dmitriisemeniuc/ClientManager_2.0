@@ -23,7 +23,7 @@ import com.semeniuc.dmitrii.clientmanager.login.LoginActivity;
 import com.semeniuc.dmitrii.clientmanager.login.LoginInteractor;
 import com.semeniuc.dmitrii.clientmanager.model.User;
 import com.semeniuc.dmitrii.clientmanager.utils.ActivityUtils;
-import com.semeniuc.dmitrii.clientmanager.utils.Constants;
+import com.semeniuc.dmitrii.clientmanager.utils.Const;
 import com.semeniuc.dmitrii.clientmanager.utils.GoogleAuthenticator;
 
 import javax.inject.Inject;
@@ -47,13 +47,8 @@ public class MainActivity extends BaseActivity
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show());
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -125,11 +120,11 @@ public class MainActivity extends BaseActivity
 
     @Override public void onLogout() {
         String userType = utils.getUserFromPrefs();
-        if (userType.equals(Constants.GOOGLE_USER)) {
+        if (userType.equals(Const.UserType.GOOGLE)) {
             Auth.GoogleSignInApi.signOut(googleAuthenticator.getApiClient())
                     .setResultCallback(status -> backToLoginActivity(false));
         }
-        utils.setUserInPrefs(Constants.NEW_USER, user);
+        utils.setUserInPrefs(Const.NEW_USER, user);
         backToLoginActivity(true);
     }
 

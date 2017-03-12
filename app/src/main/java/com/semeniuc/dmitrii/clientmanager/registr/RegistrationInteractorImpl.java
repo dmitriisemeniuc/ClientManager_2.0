@@ -7,7 +7,7 @@ import com.semeniuc.dmitrii.clientmanager.App;
 import com.semeniuc.dmitrii.clientmanager.data.local.DatabaseTaskHelper;
 import com.semeniuc.dmitrii.clientmanager.model.User;
 import com.semeniuc.dmitrii.clientmanager.utils.ActivityUtils;
-import com.semeniuc.dmitrii.clientmanager.utils.Constants;
+import com.semeniuc.dmitrii.clientmanager.utils.Const;
 
 import javax.inject.Inject;
 
@@ -72,8 +72,8 @@ public class RegistrationInteractorImpl implements RegistrationInteractor {
 
             @Override
             public void onNext(Integer result) {
-                if (result == Constants.USER_SAVED) {
-                    utils.setUserInPrefs(Constants.REGISTERED_USER, user);
+                if (result == Const.Action.USER_SAVED) {
+                    utils.setUserInPrefs(Const.UserType.REGISTERED, user);
                     listener.onSuccess();
                 } else
                     listener.onUserSavingFailed();

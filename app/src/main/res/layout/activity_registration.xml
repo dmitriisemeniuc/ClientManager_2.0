@@ -14,45 +14,45 @@
         android:focusableInTouchMode="true">
 
         <RelativeLayout
-            android:id="@+id/registration_layout"
+            android:id="@+id/registration_rl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true">
 
             <android.support.v7.widget.AppCompatEditText
-                android:id="@+id/registration_et_email"
+                android:id="@+id/registration_email_et"
                 style="@style/registrationField"
                 android:hint="@string/email"
                 android:inputType="textEmailAddress"/>
 
             <android.support.v7.widget.AppCompatEditText
-                android:id="@+id/registration_et_password"
+                android:id="@+id/registration_password_et"
                 style="@style/registrationField"
-                android:layout_below="@+id/registration_et_email"
+                android:layout_below="@+id/registration_email_et"
                 android:hint="@string/password"
                 android:inputType="textVisiblePassword"/>
 
             <android.support.v7.widget.AppCompatEditText
-                android:id="@+id/registration_et_password_confirm"
+                android:id="@+id/registration_password_confirm_et"
                 style="@style/registrationField"
-                android:layout_below="@+id/registration_et_password"
+                android:layout_below="@+id/registration_password_et"
                 android:hint="@string/confirmPassword"
                 android:inputType="textVisiblePassword"/>
 
             <android.support.v7.widget.AppCompatButton
-                android:id="@+id/registration_button"
+                android:id="@+id/registration_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/registration_et_password_confirm"
+                android:layout_below="@+id/registration_password_confirm_et"
                 android:layout_margin="@dimen/activity_horizontal_margin"
                 android:background="@drawable/registration_button"
-                android:textColor="@color/whiteTransparent70"
+                android:textColor="@color/white_transparent_70"
                 android:text="@string/registration"/>
 
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/registration_login_layout"
+            android:id="@+id/registration_login_rl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -60,25 +60,25 @@
             android:gravity="center_horizontal">
 
             <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/registration_login_question"
+                android:id="@+id/registration_login_question_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
                 android:text="@string/already_have_account"
-                android:textColor="@color/whiteTransparent70"
+                android:textColor="@color/white_transparent_70"
                 android:textSize="16sp"/>
 
             <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/registration_login_link"
+                android:id="@+id/registration_login_link_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
-                android:layout_toEndOf="@+id/registration_login_question"
-                android:layout_toRightOf="@+id/registration_login_question"
+                android:layout_toEndOf="@+id/registration_login_question_tv"
+                android:layout_toRightOf="@+id/registration_login_question_tv"
                 android:fontFamily="sans-serif"
                 android:text="@string/login_link"
-                android:textColor="@color/whiteTransparent95"
+                android:textColor="@color/white_transparent_95"
                 android:textSize="16sp"
                 android:textStyle="bold"/>
         </RelativeLayout>
