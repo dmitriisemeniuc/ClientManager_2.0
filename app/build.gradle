@@ -6,7 +6,7 @@ apply plugin: 'me.tatarka.retrolambda'
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
-    dexOptions{
+    dexOptions {
         maxProcessCount 2
         javaMaxHeapSize "2g"
     }
@@ -67,6 +67,7 @@ dependencies {
     // Google services dependencies
     compile "com.google.gms:google-services:$rootProject.ext.googleServiceVersion"
     compile "com.google.android.gms:play-services-auth:$rootProject.ext.playServicesAuthVersion"
+    compile "com.google.firebase:firebase-auth:$rootProject.ext.playServicesAuthVersion"
     // OrmLite dependencies
     compile "com.j256.ormlite:ormlite-core:$rootProject.ext.ormliteCoreVersion"
     compile "com.j256.ormlite:ormlite-android:$rootProject.ext.ormliteAndroidVersion"
@@ -81,16 +82,16 @@ dependencies {
     // Dagger dependencies
     apt "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
     /*provided 'org.glassfish:javax.annotation:10.0-b28'*/
-    provided 'javax.annotation:jsr250-api:1.0'
     compile "com.google.dagger:dagger:$rootProject.daggerVersion"
     // Robolectric dependencies
     testCompile "org.robolectric:robolectric:$rootProject.robolectricVersion"
     testCompile "org.robolectric:robolectric-annotations:$rootProject.robolectricVersion"
-    testCompile 'org.assertj:assertj-core:1.7.1'
     // Dependencies for local unit tests
     testCompile "junit:junit:$rootProject.ext.junitVersion"
     testCompile "org.mockito:mockito-all:$rootProject.ext.mockitoVersion"
     testCompile "org.hamcrest:hamcrest-all:$rootProject.ext.hamcrestVersion"
+    testCompile 'org.assertj:assertj-core:1.7.1'
+    provided 'javax.annotation:jsr250-api:1.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

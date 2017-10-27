@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.OptionalPendingResult;
+import com.semeniuc.dmitrii.clientmanager.login.LoginPresenter;
 
 public interface LoginInteractor {
 

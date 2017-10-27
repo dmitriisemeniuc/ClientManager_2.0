@@ -82,4 +82,5 @@
     <string name="profile_image">Profile image</string>
     <string name="background_image">Background image</string>
     <string name="address">Address</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
 </resources>

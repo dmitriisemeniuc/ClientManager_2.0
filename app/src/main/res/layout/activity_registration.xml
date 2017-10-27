@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/registration_password_confirm_et"
                 android:layout_margin="@dimen/activity_horizontal_margin"
-                android:background="@drawable/registration_button"
+                android:background="@drawable/login_btn_bg_selector"
                 android:textColor="@color/white_transparent_70"
                 android:text="@string/registration"/>
 

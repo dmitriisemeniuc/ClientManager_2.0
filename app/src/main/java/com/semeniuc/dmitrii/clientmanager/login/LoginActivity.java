@@ -37,14 +37,19 @@ public class LoginActivity extends BaseActivity implements LoginView {
     @BindView(R.id.login_password_et) AppCompatEditText editTextPassword;
     @BindView(R.id.main_login_layout) ViewGroup mainLayout;
 
-    @OnClick(R.id.login_with_google_btn) void googleLogin() {
+    @OnClick(R.id.login_with_google_btn)
+    void googleLogin() {
         loginWithGoogle();
     }
 
-    @OnClick(R.id.login_btn) void emailLogin() {
+    @OnClick(R.id.login_btn)
+    void emailLogin() {
         loginWithEmail();
     }
-    @OnClick(R.id.login_registration_link_tv) void register() { goToRegistrationActivity(); }
+    @OnClick(R.id.login_registration_link_tv)
+    void register() {
+        goToRegistrationActivity();
+    }
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         ((App) getApplication()).getComponent().inject(this);

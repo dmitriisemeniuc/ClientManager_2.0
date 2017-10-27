@@ -8,6 +8,7 @@
     <color name="textHint">#BDBDBD</color>
     <color name="icons">#212121</color>
     <color name="divider">#BDBDBD</color>
+    <color name="white_transparent_50">#80FFFFFF</color>
     <color name="white_transparent_70">#B3FFFFFF</color>
     <color name="white_transparent_95">#F2FFFFFF</color>
     <color name="orangeBackground">#FF6D00</color>

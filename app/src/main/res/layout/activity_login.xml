@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/login_password_et"
             android:layout_margin="@dimen/activity_horizontal_margin"
-            android:background="@drawable/login_button"
+            android:background="@drawable/login_btn_bg_selector"
             android:textColor="@color/white_transparent_70"
             android:text="@string/login"/>
 
@@ -88,6 +88,7 @@
             android:layout_width="match_parent"
             android:layout_below="@+id/login_line_separator_rl"
             android:layout_margin="@dimen/activity_horizontal_margin"
+            android:background="@drawable/login_btn_bg_selector"
             app:buttonSize="wide"/>
 
     </RelativeLayout>
